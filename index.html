@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grade Portal</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --accent-color: #2563eb;
+            --fail-color: #fee2e2;
+            --fail-text: #dc2626;
+            --pass-color: #dcfce7;
+            --pass-text: #16a34a;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        label {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100px;
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .btn-calc {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+
+        .btn-calc:hover {
+            background-color: #1d4ed8;
+        }
+
+        .result-box {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .result-box.pass {
+            background-color: var(--pass-color);
+            color: var(--pass-text);
+        }
+
+        .result-box.fail {
+            background-color: var(--fail-color);
+            color: var(--fail-text);
+        }
+
+        .grade-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Grade Transparency Calculator</h2>
+    
+    <div class="input-group">
+        <label>Preliminary Exam (10%)</label>
+        <input type="number" id="prelim" placeholder="0-100" step="0.01">
+    </div>
+    <div class="input-group">
+        <label>Midterm Exam (10%)</label>
+        <input type="number" id="midterm" placeholder="0-100" step="0.01">
+    </div>
+    <div class="input-group">
+        <label>Oral Recitation (15%)</label>
+        <input type="number" id="recitation" placeholder="0-100" step="0.01">
+    </div>
+    <div class="input-group">
+        <label>Quizzes (20%)</label>
+        <input type="number" id="quizzes" placeholder="0-100" step="0.01">
+    </div>
+    <div class="input-group">
+        <label>Activities (15%)</label>
+        <input type="number" id="activities" placeholder="0-100" step="0.01">
+    </div>
+    <div class="input-group">
+        <label>Final Exam (20%)</label>
+        <input type="number" id="finalExam" placeholder="0-100" step="0.01">
+    </div>
+    <div class="input-group">
+        <label>Semestral Project (10%)</label>
+        <input type="number" id="project" placeholder="0-100" step="0.01">
+    </div>
+
+    <button class="btn-calc" onclick="calculateGrade()">Compute Final Grade</button>
+
+    <div id="result" class="result-box">
+        <div id="computedScore"></div>
+        <div class="grade-number" id="finalMark"></div>
+    </div>
+</div>
+
+<script>
+function calculateGrade() {
+    const prelim = parseFloat(document.getElementById('prelim').value) || 0;
+    const midterm = parseFloat(document.getElementById('midterm').value) || 0;
+    const recitation = parseFloat(document.getElementById('recitation').value) || 0;
+    const quizzes = parseFloat(document.getElementById('quizzes').value) || 0;
+    const activities = parseFloat(document.getElementById('activities').value) || 0;
+    const finalExam = parseFloat(document.getElementById('finalExam').value) || 0;
+    const project = parseFloat(document.getElementById('project').value) || 0;
+
+    // Weighted percentage sum
+    const totalScore = (prelim * 0.10) + 
+                       (midterm * 0.10) + 
+                       (recitation * 0.15) + 
+                       (quizzes * 0.20) + 
+                       (activities * 0.15) + 
+                       (finalExam * 0.20) + 
+                       (project * 0.10);
+
+    const roundedScore = totalScore.toFixed(2);
+    let finalMark = "5.0";
+
+    // Grade conversion logic
+    if (totalScore >= 97.5) finalMark = "1.0";
+    else if (totalScore >= 93.5) finalMark = "1.25";
+    else if (totalScore >= 89.5) finalMark = "1.5";
+    else if (totalScore >= 87.5) finalMark = "1.75";
+    else if (totalScore >= 84.5) finalMark = "2.0";
+    else if (totalScore >= 82.5) finalMark = "2.25";
+    else if (totalScore >= 79.5) finalMark = "2.5";
+    else if (totalScore >= 77.5) finalMark = "2.75";
+    else if (totalScore >= 75.0) finalMark = "3.0";
+    else finalMark = "5.0";
+
+    const resultBox = document.getElementById('result');
+    const computedScoreText = document.getElementById('computedScore');
+    const finalMarkText = document.getElementById('finalMark');
+
+    resultBox.style.display = 'block';
+    computedScoreText.innerHTML = `Computed Total: <strong>${roundedScore}%</strong>`;
+    finalMarkText.innerText = `Final Grade: ${finalMark}`;
+
+    // Auto-highlight red for 4.0 or 5.0 (failing marks)
+    if (finalMark === "5.0" || finalMark === "4.0") {
+        resultBox.className = "result-box fail";
+    } else {
+        resultBox.className = "result-box pass";
+    }
+}
+</script>
+
+</body>
+</html>
