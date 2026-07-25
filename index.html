@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Grade Portal</title>
+    <title>Student Grade Transparency Calculator</title>
     <style>
         :root {
-            --bg-color: #f4f6f9;
+            --bg-color: #f8fafc;
             --card-bg: #ffffff;
-            --text-color: #333333;
-            --accent-color: #2563eb;
-            --fail-color: #fee2e2;
+            --primary: #2563eb;
+            --border: #e2e8f0;
+            --fail-bg: #fee2e2;
             --fail-text: #dc2626;
-            --pass-color: #dcfce7;
+            --pass-bg: #dcfce7;
             --pass-text: #16a34a;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
+            color: #1e293b;
             padding: 20px;
             display: flex;
             justify-content: center;
@@ -27,172 +27,296 @@
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
             background: var(--card-bg);
-            padding: 25px;
+            padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        h2 {
-            text-align: center;
+        h2 { text-align: center; margin-bottom: 5px; }
+        p.subtitle { text-align: center; color: #64748b; margin-bottom: 25px; }
+
+        .category-block {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
             margin-bottom: 20px;
-            color: #1e293b;
+            background-color: #fafafa;
         }
 
-        .input-group {
+        .category-title {
+            font-weight: bold;
+            font-size: 1.1rem;
             margin-bottom: 12px;
+            color: var(--primary);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        label {
+        .category-summary {
             font-size: 0.95rem;
-            font-weight: 500;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .item-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .item-row label {
+            font-size: 0.9rem;
+            color: #334155;
         }
 
         input {
-            width: 100px;
             padding: 8px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             text-align: center;
-            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .btn-calc {
             width: 100%;
-            padding: 12px;
-            background-color: var(--accent-color);
+            padding: 14px;
+            background-color: var(--primary);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 1.1rem;
+            font-weight: bold;
             cursor: pointer;
-            margin-top: 15px;
-            transition: background 0.2s;
+            margin-top: 10px;
         }
 
-        .btn-calc:hover {
-            background-color: #1d4ed8;
-        }
+        .btn-calc:hover { background-color: #1d4ed8; }
 
         .result-box {
             margin-top: 25px;
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
             text-align: center;
             display: none;
         }
 
-        .result-box.pass {
-            background-color: var(--pass-color);
-            color: var(--pass-text);
-        }
+        .result-box.pass { background-color: var(--pass-bg); color: var(--pass-text); }
+        .result-box.fail { background-color: var(--fail-bg); color: var(--fail-text); }
 
-        .result-box.fail {
-            background-color: var(--fail-color);
-            color: var(--fail-text);
-        }
-
-        .grade-number {
-            font-size: 2.2rem;
-            font-weight: bold;
-            margin-top: 5px;
-        }
+        .grade-display { font-size: 2.5rem; font-weight: bold; margin-top: 5px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2>Grade Transparency Calculator</h2>
-    
-    <div class="input-group">
-        <label>Preliminary Exam (10%)</label>
-        <input type="number" id="prelim" placeholder="0-100" step="0.01">
-    </div>
-    <div class="input-group">
-        <label>Midterm Exam (10%)</label>
-        <input type="number" id="midterm" placeholder="0-100" step="0.01">
-    </div>
-    <div class="input-group">
-        <label>Oral Recitation (15%)</label>
-        <input type="number" id="recitation" placeholder="0-100" step="0.01">
-    </div>
-    <div class="input-group">
-        <label>Quizzes (20%)</label>
-        <input type="number" id="quizzes" placeholder="0-100" step="0.01">
-    </div>
-    <div class="input-group">
-        <label>Activities (15%)</label>
-        <input type="number" id="activities" placeholder="0-100" step="0.01">
-    </div>
-    <div class="input-group">
-        <label>Final Exam (20%)</label>
-        <input type="number" id="finalExam" placeholder="0-100" step="0.01">
-    </div>
-    <div class="input-group">
-        <label>Semestral Project (10%)</label>
-        <input type="number" id="project" placeholder="0-100" step="0.01">
+    <p class="subtitle">Enter your scores earned and maximum points for each requirement</p>
+
+    <!-- 1. ACTIVITIES (15%) -->
+    <div class="category-block">
+        <div class="category-title">
+            <span>Activities (15%)</span>
+            <span class="category-summary" id="act-summary">Total: 0%</span>
+        </div>
+        <div id="activities-container"></div>
     </div>
 
-    <button class="btn-calc" onclick="calculateGrade()">Compute Final Grade</button>
+    <!-- 2. PRELIMINARY EXAM (10%) -->
+    <div class="category-block">
+        <div class="category-title">
+            <span>Preliminary Exam (10%)</span>
+            <span class="category-summary" id="prelim-summary">Total: 0%</span>
+        </div>
+        <div class="item-row">
+            <label>Preliminary Exam Score</label>
+            <input type="number" class="prelim-s" placeholder="Score" value="45">
+            <input type="number" class="prelim-m" placeholder="Max" value="70">
+        </div>
+    </div>
+
+    <!-- 3. MIDTERM EXAM (10%) -->
+    <div class="category-block">
+        <div class="category-title">
+            <span>Midterm Exam (10%)</span>
+            <span class="category-summary" id="midterm-summary">Total: 0%</span>
+        </div>
+        <div class="item-row">
+            <label>Midterm Exam Score</label>
+            <input type="number" class="midterm-s" placeholder="Score" value="23">
+            <input type="number" class="midterm-m" placeholder="Max" value="70">
+        </div>
+    </div>
+
+    <!-- 4. FINAL EXAM (20%) -->
+    <div class="category-block">
+        <div class="category-title">
+            <span>Final Exam (20%)</span>
+            <span class="category-summary" id="final-summary">Total: 0%</span>
+        </div>
+        <div class="item-row">
+            <label>Final Exam Score</label>
+            <input type="number" class="final-s" placeholder="Score" value="34">
+            <input type="number" class="final-m" placeholder="Max" value="70">
+        </div>
+    </div>
+
+    <!-- 5. SEMESTRAL PROJECT (10%) -->
+    <div class="category-block">
+        <div class="category-title">
+            <span>Semestral Project (10%)</span>
+            <span class="category-summary" id="proj-summary">Total: 0%</span>
+        </div>
+        <div class="item-row">
+            <label>Semestral Project Score</label>
+            <input type="number" class="proj-s" placeholder="Score" value="67">
+            <input type="number" class="proj-m" placeholder="Max" value="70">
+        </div>
+    </div>
+
+    <!-- 6. ORAL RECITATION (15%) -->
+    <div class="category-block">
+        <div class="category-title">
+            <span>Oral Recitation (15%)</span>
+            <span class="category-summary" id="rec-summary">Total: 0%</span>
+        </div>
+        <div id="recitation-container"></div>
+    </div>
+
+    <!-- 7. QUIZZES (20%) -->
+    <div class="category-block">
+        <div class="category-title">
+            <span>Quizzes (20%)</span>
+            <span class="category-summary" id="quiz-summary">Total: 0%</span>
+        </div>
+        <div id="quizzes-container"></div>
+    </div>
+
+    <button class="btn-calc" onclick="computeAll()">Compute Final Grade</button>
 
     <div id="result" class="result-box">
-        <div id="computedScore"></div>
-        <div class="grade-number" id="finalMark"></div>
+        <div id="summaryText"></div>
+        <div class="grade-display" id="gradeMark"></div>
     </div>
 </div>
 
 <script>
-function calculateGrade() {
-    const prelim = parseFloat(document.getElementById('prelim').value) || 0;
-    const midterm = parseFloat(document.getElementById('midterm').value) || 0;
-    const recitation = parseFloat(document.getElementById('recitation').value) || 0;
-    const quizzes = parseFloat(document.getElementById('quizzes').value) || 0;
-    const activities = parseFloat(document.getElementById('activities').value) || 0;
-    const finalExam = parseFloat(document.getElementById('finalExam').value) || 0;
-    const project = parseFloat(document.getElementById('project').value) || 0;
+// Default values based on spreadsheet setup
+const activityDefaults = [
+    { name: "Activity #1", score: 20, max: 50 },
+    { name: "Activity #2", score: 64, max: 100 },
+    { name: "Activity #3", score: 33, max: 50 },
+    { name: "Activity #4", score: 45, max: 50 },
+    { name: "Activity #5", score: 20, max: 50 },
+    { name: "Activity #6", score: 20, max: 50 },
+    { name: "Activity #7", score: 20, max: 50 },
+    { name: "Activity #8", score: 20, max: 50 },
+    { name: "Activity #9", score: 20, max: 50 },
+    { name: "Activity #10", score: 20, max: 50 }
+];
 
-    // Weighted percentage sum
-    const totalScore = (prelim * 0.10) + 
-                       (midterm * 0.10) + 
-                       (recitation * 0.15) + 
-                       (quizzes * 0.20) + 
-                       (activities * 0.15) + 
-                       (finalExam * 0.20) + 
-                       (project * 0.10);
+const recitationDefaults = [
+    { name: "Recitation 1", score: 24, max: 70 },
+    { name: "Recitation 2", score: 23, max: 50 },
+    { name: "Recitation 3", score: 23, max: 50 }
+];
 
-    const roundedScore = totalScore.toFixed(2);
-    let finalMark = "5.0";
+const quizDefaults = [
+    { name: "Quiz 1", score: 24, max: 70 },
+    { name: "Quiz 2", score: 23, max: 50 },
+    { name: "Quiz 3", score: 23, max: 50 }
+];
 
-    // Grade conversion logic
-    if (totalScore >= 97.5) finalMark = "1.0";
-    else if (totalScore >= 93.5) finalMark = "1.25";
-    else if (totalScore >= 89.5) finalMark = "1.5";
-    else if (totalScore >= 87.5) finalMark = "1.75";
-    else if (totalScore >= 84.5) finalMark = "2.0";
-    else if (totalScore >= 82.5) finalMark = "2.25";
-    else if (totalScore >= 79.5) finalMark = "2.5";
-    else if (totalScore >= 77.5) finalMark = "2.75";
-    else if (totalScore >= 75.0) finalMark = "3.0";
-    else finalMark = "5.0";
+// Dynamically generate multi-row inputs
+function createRows(containerId, items, prefix) {
+    const container = document.getElementById(containerId);
+    items.forEach((item, index) => {
+        const row = document.createElement('div');
+        row.className = 'item-row';
+        row.innerHTML = `
+            <label>${item.name}</label>
+            <input type="number" class="${prefix}-s" placeholder="Score" value="${item.score}">
+            <input type="number" class="${prefix}-m" placeholder="Max" value="${item.max}">
+        `;
+        container.appendChild(row);
+    });
+}
 
-    const resultBox = document.getElementById('result');
-    const computedScoreText = document.getElementById('computedScore');
-    const finalMarkText = document.getElementById('finalMark');
+createRows('activities-container', activityDefaults, 'act');
+createRows('recitation-container', recitationDefaults, 'rec');
+createRows('quizzes-container', quizDefaults, 'quiz');
 
-    resultBox.style.display = 'block';
-    computedScoreText.innerHTML = `Computed Total: <strong>${roundedScore}%</strong>`;
-    finalMarkText.innerText = `Final Grade: ${finalMark}`;
+function getCategoryData(prefix) {
+    const scores = document.querySelectorAll(`.${prefix}-s`);
+    const maxes = document.querySelectorAll(`.${prefix}-m`);
+    let totalScore = 0;
+    let totalMax = 0;
 
-    // Auto-highlight red for 4.0 or 5.0 (failing marks)
-    if (finalMark === "5.0" || finalMark === "4.0") {
-        resultBox.className = "result-box fail";
+    scores.forEach((el, i) => {
+        const s = parseFloat(el.value) || 0;
+        const m = parseFloat(maxes[i].value) || 0;
+        totalScore += s;
+        totalMax += m;
+    });
+
+    return totalMax > 0 ? (totalScore / totalMax) * 100 : 0;
+}
+
+function computeAll() {
+    const actP = getCategoryData('act');
+    const prelimP = getCategoryData('prelim');
+    const midtermP = getCategoryData('midterm');
+    const finalP = getCategoryData('final');
+    const projP = getCategoryData('proj');
+    const recP = getCategoryData('rec');
+    const quizP = getCategoryData('quiz');
+
+    // Update section summaries
+    document.getElementById('act-summary').innerText = `Total: ${actP.toFixed(2)}%`;
+    document.getElementById('prelim-summary').innerText = `Total: ${prelimP.toFixed(2)}%`;
+    document.getElementById('midterm-summary').innerText = `Total: ${midtermP.toFixed(2)}%`;
+    document.getElementById('final-summary').innerText = `Total: ${finalP.toFixed(2)}%`;
+    document.getElementById('proj-summary').innerText = `Total: ${projP.toFixed(2)}%`;
+    document.getElementById('rec-summary').innerText = `Total: ${recP.toFixed(2)}%`;
+    document.getElementById('quiz-summary').innerText = `Total: ${quizP.toFixed(2)}%`;
+
+    // Calculate final weighted total
+    const total = (prelimP * 0.10) + 
+                  (midtermP * 0.10) + 
+                  (recP * 0.15) + 
+                  (quizP * 0.20) + 
+                  (actP * 0.15) + 
+                  (finalP * 0.20) + 
+                  (projP * 0.10);
+
+    const rounded = total.toFixed(2);
+    let mark = "5.0";
+
+    if (total >= 97.5) mark = "1.0";
+    else if (total >= 93.5) mark = "1.25";
+    else if (total >= 89.5) mark = "1.5";
+    else if (total >= 87.5) mark = "1.75";
+    else if (total >= 84.5) mark = "2.0";
+    else if (total >= 82.5) mark = "2.25";
+    else if (total >= 79.5) mark = "2.5";
+    else if (total >= 77.5) mark = "2.75";
+    else if (total >= 75.0) mark = "3.0";
+    else mark = "5.0";
+
+    const resBox = document.getElementById('result');
+    resBox.style.display = 'block';
+    document.getElementById('summaryText').innerHTML = `Computed Score Total: <strong>${rounded}%</strong>`;
+    document.getElementById('gradeMark').innerText = `Final Grade: ${mark}`;
+
+    if (mark === "5.0" || mark === "4.0") {
+        resBox.className = "result-box fail";
     } else {
-        resultBox.className = "result-box pass";
+        resBox.className = "result-box pass";
     }
 }
 </script>
