@@ -135,8 +135,8 @@
         </div>
         <div class="item-row">
             <label>Preliminary Exam Score</label>
-            <input type="number" class="prelim-s" placeholder="Score" value="45">
-            <input type="number" class="prelim-m" placeholder="Max" value="70">
+            <input type="number" class="prelim-s" placeholder="Score">
+            <input type="number" class="prelim-m" placeholder="Max">
         </div>
     </div>
 
@@ -148,8 +148,8 @@
         </div>
         <div class="item-row">
             <label>Midterm Exam Score</label>
-            <input type="number" class="midterm-s" placeholder="Score" value="23">
-            <input type="number" class="midterm-m" placeholder="Max" value="70">
+            <input type="number" class="midterm-s" placeholder="Score">
+            <input type="number" class="midterm-m" placeholder="Max">
         </div>
     </div>
 
@@ -161,8 +161,8 @@
         </div>
         <div class="item-row">
             <label>Final Exam Score</label>
-            <input type="number" class="final-s" placeholder="Score" value="34">
-            <input type="number" class="final-m" placeholder="Max" value="70">
+            <input type="number" class="final-s" placeholder="Score">
+            <input type="number" class="final-m" placeholder="Max">
         </div>
     </div>
 
@@ -174,8 +174,8 @@
         </div>
         <div class="item-row">
             <label>Semestral Project Score</label>
-            <input type="number" class="proj-s" placeholder="Score" value="67">
-            <input type="number" class="proj-m" placeholder="Max" value="70">
+            <input type="number" class="proj-s" placeholder="Score">
+            <input type="number" class="proj-m" placeholder="Max">
         </div>
     </div>
 
@@ -206,42 +206,32 @@
 </div>
 
 <script>
-// Default values based on spreadsheet setup
+// Empty placeholders for student entry
 const activityDefaults = [
-    { name: "Activity #1", score: 20, max: 50 },
-    { name: "Activity #2", score: 64, max: 100 },
-    { name: "Activity #3", score: 33, max: 50 },
-    { name: "Activity #4", score: 45, max: 50 },
-    { name: "Activity #5", score: 20, max: 50 },
-    { name: "Activity #6", score: 20, max: 50 },
-    { name: "Activity #7", score: 20, max: 50 },
-    { name: "Activity #8", score: 20, max: 50 },
-    { name: "Activity #9", score: 20, max: 50 },
-    { name: "Activity #10", score: 20, max: 50 }
+    { name: "Activity #1" }, { name: "Activity #2" }, { name: "Activity #3" },
+    { name: "Activity #4" }, { name: "Activity #5" }, { name: "Activity #6" },
+    { name: "Activity #7" }, { name: "Activity #8" }, { name: "Activity #9" },
+    { name: "Activity #10" }
 ];
 
 const recitationDefaults = [
-    { name: "Recitation 1", score: 24, max: 70 },
-    { name: "Recitation 2", score: 23, max: 50 },
-    { name: "Recitation 3", score: 23, max: 50 }
+    { name: "Recitation 1" }, { name: "Recitation 2" }, { name: "Recitation 3" }
 ];
 
 const quizDefaults = [
-    { name: "Quiz 1", score: 24, max: 70 },
-    { name: "Quiz 2", score: 23, max: 50 },
-    { name: "Quiz 3", score: 23, max: 50 }
+    { name: "Quiz 1" }, { name: "Quiz 2" }, { name: "Quiz 3" }
 ];
 
 // Dynamically generate multi-row inputs
 function createRows(containerId, items, prefix) {
     const container = document.getElementById(containerId);
-    items.forEach((item, index) => {
+    items.forEach((item) => {
         const row = document.createElement('div');
         row.className = 'item-row';
         row.innerHTML = `
             <label>${item.name}</label>
-            <input type="number" class="${prefix}-s" placeholder="Score" value="${item.score}">
-            <input type="number" class="${prefix}-m" placeholder="Max" value="${item.max}">
+            <input type="number" class="${prefix}-s" placeholder="Score">
+            <input type="number" class="${prefix}-m" placeholder="Max">
         `;
         container.appendChild(row);
     });
@@ -251,7 +241,8 @@ createRows('activities-container', activityDefaults, 'act');
 createRows('recitation-container', recitationDefaults, 'rec');
 createRows('quizzes-container', quizDefaults, 'quiz');
 
-function getCategoryData(prefix) {
+// Transmutation Formula: (Score / Max) * 62.5 + 37.5
+function getTransmutedPercentage(prefix) {
     const scores = document.querySelectorAll(`.${prefix}-s`);
     const maxes = document.querySelectorAll(`.${prefix}-m`);
     let totalScore = 0;
@@ -264,17 +255,20 @@ function getCategoryData(prefix) {
         totalMax += m;
     });
 
-    return totalMax > 0 ? (totalScore / totalMax) * 100 : 0;
+    if (totalMax === 0) return 0;
+    
+    // Transmutation calculation
+    return ((totalScore / totalMax) * 62.5) + 37.5;
 }
 
 function computeAll() {
-    const actP = getCategoryData('act');
-    const prelimP = getCategoryData('prelim');
-    const midtermP = getCategoryData('midterm');
-    const finalP = getCategoryData('final');
-    const projP = getCategoryData('proj');
-    const recP = getCategoryData('rec');
-    const quizP = getCategoryData('quiz');
+    const actP = getTransmutedPercentage('act');
+    const prelimP = getTransmutedPercentage('prelim');
+    const midtermP = getTransmutedPercentage('midterm');
+    const finalP = getTransmutedPercentage('final');
+    const projP = getTransmutedPercentage('proj');
+    const recP = getTransmutedPercentage('rec');
+    const quizP = getTransmutedPercentage('quiz');
 
     // Update section summaries
     document.getElementById('act-summary').innerText = `Total: ${actP.toFixed(2)}%`;
@@ -310,7 +304,7 @@ function computeAll() {
 
     const resBox = document.getElementById('result');
     resBox.style.display = 'block';
-    document.getElementById('summaryText').innerHTML = `Computed Score Total: <strong>${rounded}%</strong>`;
+    document.getElementById('summaryText').innerHTML = `Transmuted Grade Total: <strong>${rounded}%</strong>`;
     document.getElementById('gradeMark').innerText = `Final Grade: ${mark}`;
 
     if (mark === "5.0" || mark === "4.0") {
