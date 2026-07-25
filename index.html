@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Grade Transparency Calculator</title>
+    <!-- JS Confetti Library for Celebrations -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --bg-color: #f8fafc;
@@ -35,7 +37,19 @@
         }
 
         h2 { text-align: center; margin-bottom: 5px; }
-        p.subtitle { text-align: center; color: #64748b; margin-bottom: 25px; }
+        p.subtitle { text-align: center; color: #64748b; margin-bottom: 15px; }
+
+        .course-notice {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--primary);
+            color: #1e40af;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 0.92rem;
+            margin-bottom: 25px;
+            text-align: center;
+            line-height: 1.4;
+        }
 
         .category-block {
             border: 1px solid var(--border);
@@ -110,6 +124,47 @@
         .result-box.fail { background-color: var(--fail-bg); color: var(--fail-text); }
 
         .grade-display { font-size: 2.5rem; font-weight: bold; margin-top: 5px; }
+
+        /* MODAL POP-UP STYLES */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: popIn 0.3s ease-out;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-icon { font-size: 3.5rem; margin-bottom: 10px; }
+        .modal-title { font-size: 1.6rem; font-weight: bold; margin-bottom: 10px; }
+        .modal-body { font-size: 1.05rem; color: #475569; margin-bottom: 20px; line-height: 1.4; }
+        .btn-close {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -117,6 +172,11 @@
 <div class="container">
     <h2>Grade Transparency Calculator</h2>
     <p class="subtitle">Enter your scores earned and maximum points for each requirement</p>
+
+    <!-- DESCRIPTION NOTICE BANNER -->
+    <div class="course-notice">
+        📌 <strong>Important Note:</strong> This grade calculator and formula breakdown are configured exclusively for subjects taught by <strong>Sir Armand</strong>. Results may not apply to other courses or departments using different grading scales.
+    </div>
 
     <!-- 1. ACTIVITIES (15%) -->
     <div class="category-block">
@@ -205,8 +265,17 @@
     </div>
 </div>
 
+<!-- POP-UP MODAL -->
+<div class="modal-overlay" id="resultModal">
+    <div class="modal-content">
+        <div class="modal-icon" id="modalIcon">🎉</div>
+        <div class="modal-title" id="modalTitle">Congratulations!</div>
+        <div class="modal-body" id="modalBody">You passed the course with flying colors!</div>
+        <button class="btn-close" onclick="closeModal()">Got it!</button>
+    </div>
+</div>
+
 <script>
-// Empty placeholders for student entry
 const activityDefaults = [
     { name: "Activity #1" }, { name: "Activity #2" }, { name: "Activity #3" },
     { name: "Activity #4" }, { name: "Activity #5" }, { name: "Activity #6" },
@@ -222,7 +291,6 @@ const quizDefaults = [
     { name: "Quiz 1" }, { name: "Quiz 2" }, { name: "Quiz 3" }
 ];
 
-// Dynamically generate multi-row inputs
 function createRows(containerId, items, prefix) {
     const container = document.getElementById(containerId);
     items.forEach((item) => {
@@ -241,7 +309,6 @@ createRows('activities-container', activityDefaults, 'act');
 createRows('recitation-container', recitationDefaults, 'rec');
 createRows('quizzes-container', quizDefaults, 'quiz');
 
-// Transmutation Formula: (Score / Max) * 62.5 + 37.5
 function getTransmutedPercentage(prefix) {
     const scores = document.querySelectorAll(`.${prefix}-s`);
     const maxes = document.querySelectorAll(`.${prefix}-m`);
@@ -256,8 +323,6 @@ function getTransmutedPercentage(prefix) {
     });
 
     if (totalMax === 0) return 0;
-    
-    // Transmutation calculation
     return ((totalScore / totalMax) * 62.5) + 37.5;
 }
 
@@ -270,7 +335,6 @@ function computeAll() {
     const recP = getTransmutedPercentage('rec');
     const quizP = getTransmutedPercentage('quiz');
 
-    // Update section summaries
     document.getElementById('act-summary').innerText = `Total: ${actP.toFixed(2)}%`;
     document.getElementById('prelim-summary').innerText = `Total: ${prelimP.toFixed(2)}%`;
     document.getElementById('midterm-summary').innerText = `Total: ${midtermP.toFixed(2)}%`;
@@ -279,7 +343,6 @@ function computeAll() {
     document.getElementById('rec-summary').innerText = `Total: ${recP.toFixed(2)}%`;
     document.getElementById('quiz-summary').innerText = `Total: ${quizP.toFixed(2)}%`;
 
-    // Calculate final weighted total
     const total = (prelimP * 0.10) + 
                   (midtermP * 0.10) + 
                   (recP * 0.15) + 
@@ -307,11 +370,37 @@ function computeAll() {
     document.getElementById('summaryText').innerHTML = `Transmuted Grade Total: <strong>${rounded}%</strong>`;
     document.getElementById('gradeMark').innerText = `Final Grade: ${mark}`;
 
+    const modal = document.getElementById('resultModal');
+    const icon = document.getElementById('modalIcon');
+    const title = document.getElementById('modalTitle');
+    const body = document.getElementById('modalBody');
+
     if (mark === "5.0" || mark === "4.0") {
         resBox.className = "result-box fail";
+        icon.innerText = "😅";
+        title.innerText = "Better Luck Next Time!";
+        title.style.color = "#dc2626";
+        body.innerHTML = `Your computed grade is <strong>${mark}</strong> (${rounded}%). Keep pushing and don't give up!`;
     } else {
         resBox.className = "result-box pass";
+        icon.innerText = "🎉";
+        title.innerText = "Congratulations!";
+        title.style.color = "#16a34a";
+        body.innerHTML = `Great job! You passed with a final grade of <strong>${mark}</strong> (${rounded}%).`;
+
+        // Fire Confetti!
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
     }
+
+    modal.style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById('resultModal').style.display = "none";
 }
 </script>
 
