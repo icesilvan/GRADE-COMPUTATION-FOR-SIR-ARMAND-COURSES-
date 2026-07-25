@@ -141,7 +141,7 @@
             padding: 30px;
             border-radius: 12px;
             text-align: center;
-            max-width: 400px;
+            max-width: 420px;
             width: 90%;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             animation: popIn 0.3s ease-out;
@@ -154,7 +154,8 @@
 
         .modal-icon { font-size: 3.5rem; margin-bottom: 10px; }
         .modal-title { font-size: 1.6rem; font-weight: bold; margin-bottom: 10px; }
-        .modal-body { font-size: 1.05rem; color: #475569; margin-bottom: 20px; line-height: 1.4; }
+        .modal-body { font-size: 1.1rem; color: #334155; margin-bottom: 20px; line-height: 1.5; }
+        .modal-grade { font-size: 0.95rem; color: #64748b; margin-top: 8px; }
         .btn-close {
             background: var(--primary);
             color: white;
@@ -269,9 +270,9 @@
 <div class="modal-overlay" id="resultModal">
     <div class="modal-content">
         <div class="modal-icon" id="modalIcon">🎉</div>
-        <div class="modal-title" id="modalTitle">Congratulations!</div>
-        <div class="modal-body" id="modalBody">You passed the course with flying colors!</div>
-        <button class="btn-close" onclick="closeModal()">Got it!</button>
+        <div class="modal-title" id="modalTitle">Mahusay!</div>
+        <div class="modal-body" id="modalBody"></div>
+        <button class="btn-close" onclick="closeModal()">Salamat, Sir!</button>
     </div>
 </div>
 
@@ -377,21 +378,27 @@ function computeAll() {
 
     if (mark === "5.0" || mark === "4.0") {
         resBox.className = "result-box fail";
-        icon.innerText = "😅";
-        title.innerText = "Better Luck Next Time!";
+        icon.innerText = "😭";
+        title.innerText = "Naku po!";
         title.style.color = "#dc2626";
-        body.innerHTML = `Your computed grade is <strong>${mark}</strong> (${rounded}%). Keep pushing and don't give up!`;
+        body.innerHTML = `
+            <div>"Oh, huwag iiyak, may next time pa! See you next year!" 😅</div>
+            <div class="modal-grade">Final Grade: <strong>${mark}</strong> (${rounded}%)</div>
+        `;
     } else {
         resBox.className = "result-box pass";
         icon.innerText = "🎉";
         title.innerText = "Congratulations!";
         title.style.color = "#16a34a";
-        body.innerHTML = `Great job! You passed with a final grade of <strong>${mark}</strong> (${rounded}%).`;
+        body.innerHTML = `
+            <div>"Mahusay! Ginalingan mo kaya deserve mo yan!" 👏</div>
+            <div class="modal-grade">Final Grade: <strong>${mark}</strong> (${rounded}%)</div>
+        `;
 
         // Fire Confetti!
         confetti({
-            particleCount: 100,
-            spread: 70,
+            particleCount: 120,
+            spread: 80,
             origin: { y: 0.6 }
         });
     }
