@@ -12,12 +12,13 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --bg-color: #f1f5f9;
-            --card-bg: #ffffff;
+            --bg-color: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.88);
             --text-main: #0f172a;
             --text-muted: #64748b;
             --primary: #2563eb;
             --primary-hover: #1d4ed8;
+            --primary-glow: rgba(37, 99, 235, 0.2);
             --accent-tag: #e0e7ff;
             --accent-tag-text: #3730a3;
             --border: #e2e8f0;
@@ -29,16 +30,17 @@
             --notice-bg: #eff6ff;
             --notice-border: #3b82f6;
             --notice-text: #1e40af;
-            --card-sub-bg: #f8fafc;
+            --card-sub-bg: rgba(248, 250, 252, 0.7);
         }
 
         [data-theme="dark"] {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
+            --bg-color: #0b0f19;
+            --card-bg: rgba(30, 41, 59, 0.85);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --primary: #3b82f6;
             --primary-hover: #60a5fa;
+            --primary-glow: rgba(59, 130, 246, 0.3);
             --accent-tag: #312e81;
             --accent-tag-text: #e0e7ff;
             --border: #334155;
@@ -47,22 +49,26 @@
             --fail-text: #fca5a5;
             --pass-bg: #052e16;
             --pass-text: #86efac;
-            --notice-bg: #1e3a8a;
+            --notice-bg: rgba(30, 58, 138, 0.5);
             --notice-border: #60a5fa;
             --notice-text: #dbeafe;
-            --card-sub-bg: #182234;
+            --card-sub-bg: rgba(15, 23, 42, 0.6);
         }
 
         * {
             box-sizing: border-box;
-            transition: background-color 0.2s ease, color 0.2s ease;
+            transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
             color: var(--text-main);
-            padding: 20px;
+            padding: 25px 15px;
             margin: 0;
             display: flex;
             justify-content: center;
@@ -70,12 +76,20 @@
 
         .container {
             width: 100%;
-            max-width: 850px;
+            max-width: 860px;
             background: var(--card-bg);
-            padding: 35px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 38px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
             position: relative;
+        }
+
+        [data-theme="dark"] .container {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
         /* HEADER & THEME TOGGLE */
@@ -83,29 +97,30 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .brand-badge {
             font-family: 'Space Grotesk', sans-serif;
             background-color: var(--accent-tag);
             color: var(--accent-tag-text);
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
 
         .theme-btn, .info-btn {
-            background: none;
+            background: var(--card-sub-bg);
             border: 1px solid var(--border);
             color: var(--text-main);
-            padding: 8px 12px;
-            border-radius: 8px;
+            padding: 8px 14px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -113,20 +128,22 @@
 
         .theme-btn:hover, .info-btn:hover {
             border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--primary-glow);
         }
 
         h2 {
             font-family: 'Space Grotesk', sans-serif;
             text-align: center;
-            margin: 10px 0 5px 0;
-            font-size: 1.8rem;
+            margin: 12px 0 6px 0;
+            font-size: 1.95rem;
             letter-spacing: -0.5px;
         }
 
         p.subtitle {
             text-align: center;
             color: var(--text-muted);
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             font-size: 0.95rem;
         }
 
@@ -134,20 +151,21 @@
             background-color: var(--notice-bg);
             border-left: 4px solid var(--notice-border);
             color: var(--notice-text);
-            padding: 14px 18px;
-            border-radius: 8px;
+            padding: 16px 20px;
+            border-radius: 12px;
             font-size: 0.92rem;
-            margin-bottom: 25px;
-            line-height: 1.5;
+            margin-bottom: 28px;
+            line-height: 1.55;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
         }
 
         /* TARGET GRADE CALCULATOR WIDGET */
         .target-widget {
             background-color: var(--card-sub-bg);
             border: 1px dashed var(--border);
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 25px;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 28px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
@@ -156,134 +174,187 @@
         }
 
         .target-widget label {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.95rem;
         }
 
         .target-widget select {
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 9px 14px;
+            border-radius: 8px;
             border: 1px solid var(--border);
             background-color: var(--input-bg);
             color: var(--text-main);
             font-weight: 600;
+            cursor: pointer;
         }
 
         .target-result {
             width: 100%;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             color: var(--primary);
             font-weight: 600;
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
         /* CATEGORY CARDS */
         .category-block {
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 20px;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 22px;
             background-color: var(--card-sub-bg);
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
         }
 
         .category-title {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
             font-size: 1.1rem;
-            margin-bottom: 14px;
-            color: var(--primary);
+            color: var(--text-main);
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 8px;
+        }
+
+        .weight-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: var(--accent-tag);
+            color: var(--accent-tag-text);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .category-summary {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--text-muted);
-            font-weight: 600;
+            font-weight: 700;
+        }
+
+        /* VISUAL PROGRESS BAR */
+        .progress-bar-bg {
+            height: 6px;
+            width: 100%;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-hover));
+            border-radius: 10px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .item-row {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 12px;
+            margin-bottom: 12px;
             align-items: center;
         }
 
         .item-row label {
             font-size: 0.9rem;
             color: var(--text-main);
+            font-weight: 500;
         }
 
         input {
-            padding: 9px;
+            padding: 10px;
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
             text-align: center;
             width: 100%;
             background-color: var(--input-bg);
             color: var(--text-main);
             font-size: 0.95rem;
+            font-weight: 600;
         }
 
         input:focus {
-            outline: 2px solid var(--primary);
-            border-color: transparent;
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+            transform: translateY(-1px);
         }
 
         /* BUTTONS */
         .btn-group {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 12px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
 
         .btn-calc {
             flex: 2;
             min-width: 200px;
-            padding: 14px;
-            background-color: var(--primary);
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1.05rem;
             font-weight: 700;
             cursor: pointer;
+            box-shadow: 0 4px 15px var(--primary-glow);
         }
 
-        .btn-calc:hover { background-color: var(--primary-hover); }
+        .btn-calc:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--primary-glow);
+        }
 
         .btn-secondary {
             flex: 1;
             min-width: 120px;
-            padding: 14px;
-            background: none;
+            padding: 15px;
+            background: var(--card-sub-bg);
             border: 1px solid var(--border);
             color: var(--text-main);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
         }
 
-        .btn-secondary:hover { border-color: var(--primary); }
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
 
         /* RESULT BOX */
         .result-box {
-            margin-top: 25px;
-            padding: 20px;
-            border-radius: 10px;
+            margin-top: 28px;
+            padding: 22px;
+            border-radius: 14px;
             text-align: center;
             display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .result-box.pass { background-color: var(--pass-bg); color: var(--pass-text); }
         .result-box.fail { background-color: var(--fail-bg); color: var(--fail-text); }
 
-        .grade-display { font-size: 2.5rem; font-weight: bold; margin-top: 5px; }
+        .grade-display { font-size: 2.6rem; font-weight: 800; margin-top: 6px; font-family: 'Space Grotesk', sans-serif; }
 
         /* MODALS */
         .modal-overlay {
@@ -294,60 +365,62 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            backdrop-filter: blur(3px);
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
             background: var(--card-bg);
             color: var(--text-main);
-            padding: 30px;
-            border-radius: 16px;
+            padding: 32px;
+            border-radius: 18px;
             text-align: center;
             max-width: 440px;
             width: 90%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            animation: popIn 0.3s ease-out;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @keyframes popIn {
-            0% { transform: scale(0.7); opacity: 0; }
+            0% { transform: scale(0.8); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .modal-icon { font-size: 4rem; margin-bottom: 10px; }
-        .modal-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: bold; margin-bottom: 10px; }
-        .modal-body { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
-        .modal-grade { font-size: 0.95rem; color: var(--text-main); margin-top: 10px; }
+        .modal-icon { font-size: 4.2rem; margin-bottom: 10px; }
+        .modal-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.65rem; font-weight: bold; margin-bottom: 10px; }
+        .modal-body { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 22px; line-height: 1.55; }
+        .modal-grade { font-size: 0.98rem; color: var(--text-main); margin-top: 10px; }
         
         .scale-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 15px 0;
+            margin: 16px 0;
             font-size: 0.88rem;
         }
 
         .scale-table th, .scale-table td {
             border: 1px solid var(--border);
-            padding: 6px 10px;
+            padding: 7px 10px;
             text-align: center;
         }
 
-        .scale-table th { background-color: var(--card-sub-bg); color: var(--primary); }
+        .scale-table th { background-color: var(--card-sub-bg); color: var(--primary); font-family: 'Space Grotesk', sans-serif; }
 
         .btn-close {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 24px;
-            border-radius: 8px;
+            padding: 12px 28px;
+            border-radius: 10px;
             font-size: 1rem;
             cursor: pointer;
             font-weight: bold;
+            box-shadow: 0 4px 12px var(--primary-glow);
         }
 
         /* RESPONSIVE DESIGN */
         @media (max-width: 600px) {
-            .container { padding: 20px; }
+            .container { padding: 22px; }
             .item-row { grid-template-columns: 1fr 1fr; }
             .item-row label { grid-column: span 2; font-weight: 600; margin-bottom: 2px; }
             .btn-group { flex-direction: column; }
@@ -356,11 +429,12 @@
         /* PRINT STYLES FOR EXPORT */
         @media print {
             body { background: white; color: black; }
-            .container { box-shadow: none; border: none; width: 100%; max-width: 100%; padding: 0; }
+            .container { box-shadow: none; border: none; width: 100%; max-width: 100%; padding: 0; backdrop-filter: none; }
             .header-bar, .theme-btn, .info-btn, .btn-group, .target-widget, .course-notice { display: none !important; }
             .category-block { border: 1px solid #ccc; background: none; page-break-inside: avoid; }
             input { border: none; background: none; font-weight: bold; }
             .result-box { display: block !important; border: 1px solid #000; background: none !important; color: black !important; }
+            .progress-bar-bg { display: none !important; }
         }
     </style>
 </head>
@@ -381,7 +455,7 @@
 
     <!-- DESCRIPTION NOTICE BANNER -->
     <div class="course-notice">
-        📌 <strong>Departmental Note:</strong> Configured exclusively for Department of Communication courses taught by <strong>Sir Armand</strong>. All scores utilize the standard 62.5% transmuted baseline formula.
+        📌 <strong>Hello, BAC Students!</strong> I built this calculator to give you a clear and transparent view of how your grades are computed in our subject. Feel free to use this anytime to keep track of your scores and overall progress throughout the sem!
     </div>
 
     <!-- TARGET GRADE CALCULATOR WIDGET -->
@@ -402,19 +476,27 @@
 
     <!-- 1. ACTIVITIES (15%) -->
     <div class="category-block">
-        <div class="category-title">
-            <span>Activities & Classwork (15%)</span>
-            <span class="category-summary" id="act-summary">Total: 0%</span>
+        <div class="category-header">
+            <div class="category-title">
+                <span>📝 Activities & Classwork</span>
+                <span class="weight-badge">15% WEIGHT</span>
+            </div>
+            <span class="category-summary" id="act-summary">0%</span>
         </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="act-progress"></div></div>
         <div id="activities-container"></div>
     </div>
 
     <!-- 2. PRELIMINARY EXAM (10%) -->
     <div class="category-block">
-        <div class="category-title">
-            <span>Preliminary Examination (10%)</span>
-            <span class="category-summary" id="prelim-summary">Total: 0%</span>
+        <div class="category-header">
+            <div class="category-title">
+                <span>✍️ Preliminary Examination</span>
+                <span class="weight-badge">10% WEIGHT</span>
+            </div>
+            <span class="category-summary" id="prelim-summary">0%</span>
         </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="prelim-progress"></div></div>
         <div class="item-row">
             <label>Preliminary Exam Score</label>
             <input type="number" class="prelim-s save-input" placeholder="Score">
@@ -424,10 +506,14 @@
 
     <!-- 3. MIDTERM EXAM (10%) -->
     <div class="category-block">
-        <div class="category-title">
-            <span>Midterm Examination (10%)</span>
-            <span class="category-summary" id="midterm-summary">Total: 0%</span>
+        <div class="category-header">
+            <div class="category-title">
+                <span>📑 Midterm Examination</span>
+                <span class="weight-badge">10% WEIGHT</span>
+            </div>
+            <span class="category-summary" id="midterm-summary">0%</span>
         </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="midterm-progress"></div></div>
         <div class="item-row">
             <label>Midterm Exam Score</label>
             <input type="number" class="midterm-s save-input" placeholder="Score">
@@ -437,10 +523,14 @@
 
     <!-- 4. FINAL EXAM (20%) -->
     <div class="category-block">
-        <div class="category-title">
-            <span>Final Examination (20%)</span>
-            <span class="category-summary" id="final-summary">Total: 0%</span>
+        <div class="category-header">
+            <div class="category-title">
+                <span>🎓 Final Examination</span>
+                <span class="weight-badge">20% WEIGHT</span>
+            </div>
+            <span class="category-summary" id="final-summary">0%</span>
         </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="final-progress"></div></div>
         <div class="item-row">
             <label>Final Exam Score</label>
             <input type="number" class="final-s save-input" placeholder="Score">
@@ -450,10 +540,14 @@
 
     <!-- 5. SEMESTRAL PROJECT (10%) -->
     <div class="category-block">
-        <div class="category-title">
-            <span>Semestral Production Project (10%)</span>
-            <span class="category-summary" id="proj-summary">Total: 0%</span>
+        <div class="category-header">
+            <div class="category-title">
+                <span>🎬 Production Project</span>
+                <span class="weight-badge">10% WEIGHT</span>
+            </div>
+            <span class="category-summary" id="proj-summary">0%</span>
         </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="proj-progress"></div></div>
         <div class="item-row">
             <label>Semestral Project Score</label>
             <input type="number" class="proj-s save-input" placeholder="Score">
@@ -463,19 +557,27 @@
 
     <!-- 6. ORAL RECITATION (15%) -->
     <div class="category-block">
-        <div class="category-title">
-            <span>Recitation & Media Discussions (15%)</span>
-            <span class="category-summary" id="rec-summary">Total: 0%</span>
+        <div class="category-header">
+            <div class="category-title">
+                <span>🎙️ Media Discussions</span>
+                <span class="weight-badge">15% WEIGHT</span>
+            </div>
+            <span class="category-summary" id="rec-summary">0%</span>
         </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="rec-progress"></div></div>
         <div id="recitation-container"></div>
     </div>
 
     <!-- 7. QUIZZES (20%) -->
     <div class="category-block">
-        <div class="category-title">
-            <span>Quizzes & Assessments (20%)</span>
-            <span class="category-summary" id="quiz-summary">Total: 0%</span>
+        <div class="category-header">
+            <div class="category-title">
+                <span>📊 Quizzes & Assessments</span>
+                <span class="weight-badge">20% WEIGHT</span>
+            </div>
+            <span class="category-summary" id="quiz-summary">0%</span>
         </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="quiz-progress"></div></div>
         <div id="quizzes-container"></div>
     </div>
 
@@ -563,23 +665,22 @@ createRows('activities-container', activityDefaults, 'act');
 createRows('recitation-container', recitationDefaults, 'rec');
 createRows('quizzes-container', quizDefaults, 'quiz');
 
-// LOCALSTORAGE: AUTO-SAVE & RESTORE
+// LOCALSTORAGE: AUTO-SAVE & LIVE PROGRESS UPDATE
 function setupAutoSave() {
     const inputs = document.querySelectorAll('.save-input');
     inputs.forEach((input, index) => {
-        // Set unique ID if missing
         if (!input.id) input.id = 'input-auto-' + index;
         
-        // Restore saved value
         const savedVal = localStorage.getItem(input.id);
         if (savedVal !== null) input.value = savedVal;
 
-        // Save on input change
         input.addEventListener('input', () => {
             localStorage.setItem(input.id, input.value);
+            updateLiveProgress();
             calculateTargetRequirement();
         });
     });
+    updateLiveProgress();
 }
 
 function resetForm() {
@@ -590,6 +691,7 @@ function resetForm() {
             localStorage.removeItem(input.id);
         });
         document.getElementById('result').style.display = 'none';
+        updateLiveProgress();
         calculateTargetRequirement();
     }
 }
@@ -634,6 +736,18 @@ function getTransmutedPercentage(prefix) {
     return ((totalScore / totalMax) * 62.5) + 37.5;
 }
 
+function updateLiveProgress() {
+    const categories = ['act', 'prelim', 'midterm', 'final', 'proj', 'rec', 'quiz'];
+    categories.forEach(cat => {
+        const val = getTransmutedPercentage(cat);
+        const summary = document.getElementById(`${cat}-summary`);
+        const progress = document.getElementById(`${cat}-progress`);
+        
+        if (summary) summary.innerText = `${val.toFixed(1)}%`;
+        if (progress) progress.style.width = `${val}%`;
+    });
+}
+
 function calculateTargetRequirement() {
     const targetMap = {
         "1.0": 97.5, "1.25": 93.5, "1.5": 89.5,
@@ -642,17 +756,15 @@ function calculateTargetRequirement() {
     const targetGrade = document.getElementById('targetGradeSelect').value;
     const targetOverall = targetMap[targetGrade];
 
-    // Compute current total achieved percentage
     const prelimP = getTransmutedPercentage('prelim');
     const midtermP = getTransmutedPercentage('midterm');
     const recP = getTransmutedPercentage('rec');
     const quizP = getTransmutedPercentage('quiz');
     const actP = getTransmutedPercentage('act');
 
-    // Assuming Final Exam (20%) and Project (10%) might be remaining
     const currentContribution = (prelimP * 0.10) + (midtermP * 0.10) + (recP * 0.15) + (quizP * 0.20) + (actP * 0.15);
     const neededContribution = targetOverall - currentContribution;
-    const remainingWeight = 0.30; // 20% final exam + 10% project
+    const remainingWeight = 0.30; 
 
     const targetEl = document.getElementById('targetResultText');
     if (neededContribution <= 0) {
@@ -662,7 +774,6 @@ function calculateTargetRequirement() {
         if (avgTransmutedNeeded > 100) {
             targetEl.innerText = `⚠️ Reaching ${targetGrade} requires higher scores than remaining points allow. Aim for the next grade bracket!`;
         } else {
-            // Convert transmuted needed back to raw percentage: T = (Raw * 62.5) + 37.5 => Raw = (T - 37.5) / 62.5
             const rawPercentageNeeded = Math.max(0, ((avgTransmutedNeeded - 37.5) / 62.5) * 100);
             targetEl.innerText = `💡 To target a ${targetGrade}, you need an average of ~${rawPercentageNeeded.toFixed(1)}% raw score on remaining exams/projects.`;
         }
@@ -670,6 +781,8 @@ function calculateTargetRequirement() {
 }
 
 function computeAll() {
+    updateLiveProgress();
+
     const actP = getTransmutedPercentage('act');
     const prelimP = getTransmutedPercentage('prelim');
     const midtermP = getTransmutedPercentage('midterm');
@@ -677,14 +790,6 @@ function computeAll() {
     const projP = getTransmutedPercentage('proj');
     const recP = getTransmutedPercentage('rec');
     const quizP = getTransmutedPercentage('quiz');
-
-    document.getElementById('act-summary').innerText = `Total: ${actP.toFixed(2)}%`;
-    document.getElementById('prelim-summary').innerText = `Total: ${prelimP.toFixed(2)}%`;
-    document.getElementById('midterm-summary').innerText = `Total: ${midtermP.toFixed(2)}%`;
-    document.getElementById('final-summary').innerText = `Total: ${finalP.toFixed(2)}%`;
-    document.getElementById('proj-summary').innerText = `Total: ${projP.toFixed(2)}%`;
-    document.getElementById('rec-summary').innerText = `Total: ${recP.toFixed(2)}%`;
-    document.getElementById('quiz-summary').innerText = `Total: ${quizP.toFixed(2)}%`;
 
     const total = (prelimP * 0.10) + 
                   (midtermP * 0.10) + 
@@ -713,7 +818,6 @@ function computeAll() {
     document.getElementById('summaryText').innerHTML = `Transmuted Grade Total: <strong>${rounded}%</strong>`;
     document.getElementById('gradeMark').innerText = `Final Grade: ${mark}`;
 
-    // Custom Emoji & Message per Grade
     let tagalogTitle = "";
     let tagalogMsg = "";
     let iconChar = "🎉";
@@ -805,7 +909,6 @@ function closeScaleModal() {
     document.getElementById('scaleModal').style.display = "none";
 }
 
-// Initialize setup
 setupAutoSave();
 restoreTheme();
 calculateTargetRequirement();
