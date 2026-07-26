@@ -1,139 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Grade Inquiry</title>
-  <style>
-    /* Wrapper to center the component on the page */
-    .widget-container {
-      max-width: 650px;
-      margin: 40px auto;
-      padding: 0 16px;
+/* KEYFRAME ANIMATIONS */
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
-
-    .contact-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 16px 20px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
+}
 
-    .contact-info {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
+/* UPDATE CATEGORY BLOCK WITH STAGGERED FADE-IN */
+.category-block {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 22px;
+    background-color: var(--card-sub-bg);
+    animation: slideUpFade 0.5s ease-out backwards;
+}
 
-    .contact-icon {
-      font-size: 1.5rem;
-      background-color: #eff6ff;
-      padding: 10px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+/* HOVER EFFECT ON CATEGORY CARDS */
+.category-block:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
 
-    .contact-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .contact-label {
-      margin: 0;
-      font-size: 0.85rem;
-      color: #64748b;
-      font-weight: 500;
-    }
-
-    .contact-email {
-      color: #2563eb;
-      font-weight: 600;
-      text-decoration: none;
-      font-size: 0.95rem;
-      word-break: break-all;
-    }
-
-    .contact-email:hover {
-      text-decoration: underline;
-    }
-
-    .copy-btn {
-      background-color: #0f172a;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 16px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #ffffff;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-      white-space: nowrap;
-    }
-
-    .copy-btn:hover {
-      background-color: #1e293b;
-    }
-
-    /* Mobile Responsive Adjustments */
-    @media (max-width: 520px) {
-      .contact-card {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-      }
-
-      .copy-btn {
-        width: 100%;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="widget-container">
-    <div class="contact-card">
-      <div class="contact-info">
-        <span class="contact-icon">✉️</span>
-        <div class="contact-text">
-          <p class="contact-label">Have questions or grade inquiries?</p>
-          <a 
-            class="contact-email" 
-            href="mailto:armandnicole.bautista@g.batstate-u.edu.ph?subject=Grade%20Inquiry%3A%20%5BInsert%20Student%20Name%2FID%5D&body=Dear%20Instructor%20Bautista%2C%0A%0AI%20am%20reaching%20out%20regarding%20my%20grades%20for%20%5BSubject%20Name%5D.%0A%0AMy%20Details%3A%0A-%20Student%20Name%3A%20%0A-%20Student%20ID%3A%20%0A%0AMy%20Concern%2FQuestion%3A%0A%5BPlease%20describe%20your%20inquiry%20here%5D%0A%0AThank%20you!"
-          >
-            armandnicole.bautista@g.batstate-u.edu.ph
-          </a>
-        </div>
-      </div>
-      <button class="copy-btn" id="copyBtn" onclick="copyEmail()">Copy Email</button>
-    </div>
-  </div>
-
-  <script>
-    function copyEmail() {
-      const email = "armandnicole.bautista@g.batstate-u.edu.ph";
-      const btn = document.getElementById("copyBtn");
-
-      navigator.clipboard.writeText(email).then(() => {
-        btn.textContent = "Copied! ✓";
-        btn.style.backgroundColor = "#16a34a";
-
-        setTimeout(() => {
-          btn.textContent = "Copy Email";
-          btn.style.backgroundColor = "#0f172a";
-        }, 2000);
-      }).catch(err => {
-        console.error("Failed to copy email: ", err);
-      });
-    }
-  </script>
-
-</body>
-</html>
+/* STAGGERED DELAYS FOR EACH CARD */
+.category-block:nth-child(1) { animation-delay: 0.05s; }
+.category-block:nth-child(2) { animation-delay: 0.10s; }
+.category-block:nth-child(3) { animation-delay: 0.15s; }
+.category-block:nth-child(4) { animation-delay: 0.20s; }
+.category-block:nth-child(5) { animation-delay: 0.25s; }
+.category-block:nth-child(6) { animation-delay: 0.30s; }
+.category-block:nth-child(7) { animation-delay: 0.35s; }
