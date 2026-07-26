@@ -152,10 +152,10 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .modal-icon { font-size: 3.5rem; margin-bottom: 10px; }
+        .modal-icon { font-size: 4rem; margin-bottom: 10px; }
         .modal-title { font-size: 1.6rem; font-weight: bold; margin-bottom: 10px; }
-        .modal-body { font-size: 1.1rem; color: #334155; margin-bottom: 20px; line-height: 1.5; }
-        .modal-grade { font-size: 0.95rem; color: #64748b; margin-top: 8px; }
+        .modal-body { font-size: 1.05rem; color: #334155; margin-bottom: 20px; line-height: 1.5; }
+        .modal-grade { font-size: 0.95rem; color: #64748b; margin-top: 10px; }
         .btn-close {
             background: var(--primary);
             color: white;
@@ -269,8 +269,8 @@
 <!-- POP-UP MODAL -->
 <div class="modal-overlay" id="resultModal">
     <div class="modal-content">
-        <div class="modal-icon" id="modalIcon">🎉</div>
-        <div class="modal-title" id="modalTitle">Mahusay!</div>
+        <div class="modal-icon" id="modalIcon">👑</div>
+        <div class="modal-title" id="modalTitle">Napakahusay!</div>
         <div class="modal-body" id="modalBody"></div>
         <button class="btn-close" onclick="closeModal()">Salamat, Sir!</button>
     </div>
@@ -371,31 +371,76 @@ function computeAll() {
     document.getElementById('summaryText').innerHTML = `Transmuted Grade Total: <strong>${rounded}%</strong>`;
     document.getElementById('gradeMark').innerText = `Final Grade: ${mark}`;
 
+    // Custom Emoji, Title & Message per Grade
+    let tagalogTitle = "";
+    let tagalogMsg = "";
+    let iconChar = "🎉";
+
+    if (mark === "1.0") {
+        tagalogTitle = "Napakahusay!";
+        tagalogMsg = "Nakakabilib ang sipag at dedikasyon mo ngayong sem. Ipagpatuloy mo lang 'yang ganyang husay!";
+        iconChar = "👑"; // Crown for 1.0
+    } else if (mark === "1.25") {
+        tagalogTitle = "Mabuting trabaho!";
+        tagalogMsg = "Kitang-kita ang effort na ibinuhos mo rito. Maging proud ka sa sarili mo at sa bawat puyat mo.";
+        iconChar = "🏆"; // Trophy for 1.25
+    } else if (mark === "1.5") {
+        tagalogTitle = "Galing!";
+        tagalogMsg = "Isang solid na performance ngayong semester. Pinatunayan mong kaya mong mag-excel!";
+        iconChar = "🌟"; // Star for 1.5
+    } else if (mark === "1.75") {
+        tagalogTitle = "Husay!";
+        tagalogMsg = "Magandang marka! Naging consistent ka sa mga requirements at aralin. Keep it up!";
+        iconChar = "👏"; // Clapping hands for 1.75
+    } else if (mark === "2.0") {
+        tagalogTitle = "Magandang laban!";
+        tagalogMsg = "Naitawid mo nang maayos ang subject na 'to. Tuloy-tuloy lang ang sipag!";
+        iconChar = "😎"; // Cool face for 2.0
+    } else if (mark === "2.25") {
+        tagalogTitle = "Ligtas at Pasado!";
+        tagalogMsg = "May mga naging pagsubok man, ang mahalaga ay nakaraos ka at may natutunan.";
+        iconChar = "🌱"; // Seedling for 2.25
+    } else if (mark === "2.5") {
+        tagalogTitle = "Pinaghirapan!";
+        tagalogMsg = "Alam kong hindi naging madali ang subject na 'to, pero ang mahalaga hindi ka sumuko.";
+        iconChar = "🛡️"; // Shield for 2.5
+    } else if (mark === "2.75") {
+        tagalogTitle = "Kumapit at Nagtagumpay!";
+        tagalogMsg = "Muntik man, pinatunayan mong may tibay ka ng loob para tumapos. Bawi sa susunod!";
+        iconChar = "💪"; // Flexed muscle for 2.75
+    } else if (mark === "3.0") {
+        tagalogTitle = "Naitawid rin!";
+        tagalogMsg = "Huling hirit pero pasado pa rin! Ang mahalaga rito ay lumaban ka hanggang dulo.";
+        iconChar = "🎓"; // Graduation cap for 3.0
+    } else {
+        tagalogTitle = "Bawi tayo next time.";
+        tagalogMsg = "Hindi rito nagtatapos ang lahat. Ang bawat pagsubok ay pagkakataon para magbalik nang mas handa.";
+        iconChar = "🌿"; // Leaf for 5.0
+    }
+
     const modal = document.getElementById('resultModal');
     const icon = document.getElementById('modalIcon');
     const title = document.getElementById('modalTitle');
     const body = document.getElementById('modalBody');
 
-    if (mark === "5.0" || mark === "4.0") {
+    icon.innerText = iconChar;
+    title.innerText = tagalogTitle;
+
+    if (mark === "5.0") {
         resBox.className = "result-box fail";
-        icon.innerText = "😭";
-        title.innerText = "Naku po!";
         title.style.color = "#dc2626";
         body.innerHTML = `
-            <div>"Oh, huwag iiyak, may next time pa! See you next year!" 😅</div>
+            <div>"${tagalogMsg}"</div>
             <div class="modal-grade">Final Grade: <strong>${mark}</strong> (${rounded}%)</div>
         `;
     } else {
         resBox.className = "result-box pass";
-        icon.innerText = "🎉";
-        title.innerText = "Congratulations!";
         title.style.color = "#16a34a";
         body.innerHTML = `
-            <div>"Mahusay! Ginalingan mo kaya deserve mo yan!" 👏</div>
+            <div>"${tagalogMsg}"</div>
             <div class="modal-grade">Final Grade: <strong>${mark}</strong> (${rounded}%)</div>
         `;
 
-        // Fire Confetti!
         confetti({
             particleCount: 120,
             spread: 80,
