@@ -5,26 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Grade Inquiry</title>
   <style>
+    /* Wrapper to center the component on the page */
+    .widget-container {
+      max-width: 650px;
+      margin: 40px auto;
+      padding: 0 16px;
+    }
+
     .contact-card {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background-color: #f8fafc;
+      background-color: #ffffff;
       border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin: 16px 0;
-      font-family: Arial, sans-serif;
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     .contact-info {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
     .contact-icon {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
+      background-color: #eff6ff;
+      padding: 10px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contact-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
     .contact-label {
@@ -39,6 +58,7 @@
       font-weight: 600;
       text-decoration: none;
       font-size: 0.95rem;
+      word-break: break-all;
     }
 
     .contact-email:hover {
@@ -46,46 +66,69 @@
     }
 
     .copy-btn {
-      background-color: #ffffff;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      padding: 6px 12px;
-      font-size: 0.8rem;
+      background-color: #0f172a;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 0.85rem;
       font-weight: 600;
-      color: #334155;
+      color: #ffffff;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: background-color 0.2s ease;
+      white-space: nowrap;
     }
 
     .copy-btn:hover {
-      background-color: #f1f5f9;
-      border-color: #94a3b8;
+      background-color: #1e293b;
+    }
+
+    /* Mobile Responsive Adjustments */
+    @media (max-width: 520px) {
+      .contact-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .copy-btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="contact-card">
-    <div class="contact-info">
-      <span class="contact-icon">✉️</span>
-      <div>
-        <p class="contact-label">Have questions or grade inquiries?</p>
-        <a 
-          class="contact-email" 
-          href="mailto:armandnicole.bautista@g.batstate-u.edu.ph?subject=Grade%20Inquiry%3A%20%5BInsert%20Student%20Name%2FID%5D&body=Dear%20Instructor%20Bautista%2C%0A%0AI%20am%20reaching%20out%20regarding%20my%20grades%20for%20%5BSubject%20Name%5D.%0A%0AMy%20Details%3A%0A-%20Student%20Name%3A%20%0A-%20Student%20ID%3A%20%0A%0AMy%20Concern%2FQuestion%3A%0A%5BPlease%20describe%20your%20inquiry%20here%5D%0A%0AThank%20you!"
-        >
-          armandnicole.bautista@g.batstate-u.edu.ph
-        </a>
+  <div class="widget-container">
+    <div class="contact-card">
+      <div class="contact-info">
+        <span class="contact-icon">✉️</span>
+        <div class="contact-text">
+          <p class="contact-label">Have questions or grade inquiries?</p>
+          <a 
+            class="contact-email" 
+            href="mailto:armandnicole.bautista@g.batstate-u.edu.ph?subject=Grade%20Inquiry%3A%20%5BInsert%20Student%20Name%2FID%5D&body=Dear%20Instructor%20Bautista%2C%0A%0AI%20am%20reaching%20out%20regarding%20my%20grades%20for%20%5BSubject%20Name%5D.%0A%0AMy%20Details%3A%0A-%20Student%20Name%3A%20%0A-%20Student%20ID%3A%20%0A%0AMy%20Concern%2FQuestion%3A%0A%5BPlease%20describe%20your%20inquiry%20here%5D%0A%0AThank%20you!"
+          >
+            armandnicole.bautista@g.batstate-u.edu.ph
+          </a>
+        </div>
       </div>
+      <button class="copy-btn" id="copyBtn" onclick="copyEmail()">Copy Email</button>
     </div>
-    <button class="copy-btn" onclick="copyEmail()">Copy Email</button>
   </div>
 
   <script>
     function copyEmail() {
       const email = "armandnicole.bautista@g.batstate-u.edu.ph";
+      const btn = document.getElementById("copyBtn");
+
       navigator.clipboard.writeText(email).then(() => {
-        alert("Email address copied to clipboard!");
+        btn.textContent = "Copied! ✓";
+        btn.style.backgroundColor = "#16a34a";
+
+        setTimeout(() => {
+          btn.textContent = "Copy Email";
+          btn.style.backgroundColor = "#0f172a";
+        }, 2000);
       }).catch(err => {
         console.error("Failed to copy email: ", err);
       });
