@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comm Studies Grade Transparency Hub</title>
+    <title>Academic Grade Transparency Hub</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -145,129 +145,59 @@
             color: var(--text-muted);
             margin-bottom: 22px;
             font-size: 0.95rem;
+            font-weight: 600;
         }
 
-        .course-notice {
-            background-color: var(--notice-bg);
-            border-left: 4px solid var(--notice-border);
-            color: var(--notice-text);
-            padding: 16px 20px;
+        /* TOTAL WEIGHT TRACKER BAR */
+        .weight-tracker {
+            background: var(--card-sub-bg);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            font-size: 0.92rem;
-            margin-bottom: 24px;
-            line-height: 1.55;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-        }
-
-        /* CONTACT INQUIRY CARD */
-        .contact-card {
-            background-color: var(--card-sub-bg);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 16px 20px;
-            margin-bottom: 28px;
+            padding: 12px 18px;
+            margin-bottom: 20px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            gap: 12px;
-            flex-wrap: wrap;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 600;
         }
 
-        .contact-info {
+        .weight-status-valid { color: var(--pass-text); }
+        .weight-status-invalid { color: var(--fail-text); }
+
+        .weight-input-container {
             display: flex;
             align-items: center;
-            gap: 12px;
-        }
-
-        .contact-icon {
-            font-size: 1.5rem;
+            gap: 4px;
             background: var(--accent-tag);
-            padding: 8px 12px;
-            border-radius: 10px;
-        }
-
-        .contact-text {
-            font-size: 0.88rem;
-        }
-
-        .contact-text strong {
-            display: block;
-            color: var(--text-main);
-            font-size: 0.92rem;
-        }
-
-        .contact-email {
-            color: var(--primary);
-            font-weight: 600;
-            text-decoration: none;
-            word-break: break-all;
-        }
-
-        .btn-copy {
-            background: var(--text-main);
-            color: var(--bg-color);
-            border: none;
-            padding: 8px 16px;
+            padding: 2px 8px;
             border-radius: 8px;
-            font-size: 0.82rem;
+        }
+
+        .weight-input-container label {
+            font-size: 0.72rem;
             font-weight: 700;
-            cursor: pointer;
+            color: var(--accent-tag-text);
+            text-transform: uppercase;
         }
 
-        .btn-copy:hover {
-            opacity: 0.9;
-        }
-
-        /* TARGET WIDGET */
-        .target-widget {
-            background-color: var(--card-sub-bg);
-            border: 1px dashed var(--border);
-            border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 28px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 12px;
-            justify-content: space-between;
-        }
-
-        .target-widget label {
-            font-weight: 700;
-            font-size: 0.95rem;
-        }
-
-        .target-widget select {
-            padding: 9px 14px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background-color: var(--input-bg);
-            color: var(--text-main);
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .target-result {
-            width: 100%;
-            font-size: 0.92rem;
-            color: var(--primary);
-            font-weight: 600;
-            margin-top: 4px;
+        .weight-input {
+            width: 45px !important;
+            padding: 2px 4px !important;
+            font-size: 0.82rem !important;
+            font-weight: 700 !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 4px !important;
+            text-align: center !important;
+            background: var(--input-bg) !important;
         }
 
         /* KEYFRAME ANIMATIONS */
         @keyframes slideUpFade {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* CATEGORY CARDS */
         .category-block {
             border: 1px solid var(--border);
             border-radius: 14px;
@@ -296,6 +226,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .category-title {
@@ -306,17 +238,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        .weight-badge {
-            font-size: 0.72rem;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 6px;
-            background: var(--accent-tag);
-            color: var(--accent-tag-text);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .category-summary {
@@ -506,16 +427,6 @@
             .item-row label { grid-column: span 2; font-weight: 600; margin-bottom: 2px; }
             .btn-group { flex-direction: column; }
         }
-
-        @media print {
-            body { background: white; color: black; }
-            .container { box-shadow: none; border: none; width: 100%; max-width: 100%; padding: 0; backdrop-filter: none; }
-            .header-bar, .theme-btn, .info-btn, .btn-group, .target-widget, .course-notice, .contact-card { display: none !important; }
-            .category-block { border: 1px solid #ccc; background: none; page-break-inside: avoid; }
-            input { border: none; background: none; font-weight: bold; }
-            .result-box { display: block !important; border: 1px solid #000; background: none !important; color: black !important; }
-            .progress-bar-bg { display: none !important; }
-        }
     </style>
 </head>
 <body>
@@ -531,48 +442,24 @@
     </div>
 
     <h2>Grade Transparency Calculator</h2>
-    <p class="subtitle">Official Grade Computation & Performance Analytics Portal</p>
+    <p class="subtitle">Purposive Communication | Broadcasting Principles and Practices | Digital Publishing</p>
 
-    <!-- DESCRIPTION BANNER -->
-    <div class="course-notice">
-        📌 <strong>Hello, BAC Students!</strong> I built this calculator to give you a clear and transparent view of how your grades are computed in our subject. Feel free to use this anytime to keep track of your scores and overall progress throughout the sem!
-    </div>
-
-    <!-- CONTACT INQUIRY CARD -->
-    <div class="contact-card">
-        <div class="contact-info">
-            <div class="contact-icon">✉️</div>
-            <div class="contact-text">
-                <strong>Have questions or grade inquiries?</strong>
-                <a href="mailto:armandnicole.bautista@g.batstate-u.edu.ph" class="contact-email" id="emailText">armandnicole.bautista@g.batstate-u.edu.ph</a>
-            </div>
-        </div>
-        <button class="btn-copy" id="copyBtn" onclick="copyEmail()">Copy Email</button>
-    </div>
-
-    <!-- TARGET GRADE CALCULATOR WIDGET -->
-    <div class="target-widget">
-        <div>
-            <label for="targetGradeSelect">🎯 Target Course Grade:</label>
-            <select id="targetGradeSelect" onchange="calculateTargetRequirement()">
-                <option value="1.0">1.00 (98%)</option>
-                <option value="1.25">1.25 (94%)</option>
-                <option value="1.5">1.50 (90%)</option>
-                <option value="1.75">1.75 (88%)</option>
-                <option value="2.0">2.00 (85%)</option>
-                <option value="3.0">3.00 (75%)</option>
-            </select>
-        </div>
-        <div class="target-result" id="targetResultText">Fill in your current scores to see your remaining target score requirement.</div>
+    <!-- LIVE WEIGHT TRACKER BANNER -->
+    <div class="weight-tracker">
+        <span>⚖️ Total Course Weight Allocation:</span>
+        <span id="weightTotalStatus" class="weight-status-valid">100% (Valid)</span>
     </div>
 
     <div id="categories-wrapper">
-        <!-- 1. ACTIVITIES (15%) -->
+        <!-- 1. ACTIVITIES (Default: 15%) -->
         <div class="category-block">
             <div class="category-header">
                 <div class="category-title">
                     <span>📝 Activities & Classwork</span>
-                    <span class="weight-badge">15% WEIGHT</span>
+                    <div class="weight-input-container">
+                        <label for="weight-act">WEIGHT:</label>
+                        <input type="number" id="weight-act" class="weight-input save-input" value="15" min="0" max="100">%
+                    </div>
                 </div>
                 <span class="category-summary" id="act-summary">0%</span>
             </div>
@@ -580,12 +467,15 @@
             <div id="activities-container"></div>
         </div>
 
-        <!-- 2. PRELIMINARY EXAM (10%) -->
+        <!-- 2. PRELIMINARY EXAM (Default: 10%) -->
         <div class="category-block">
             <div class="category-header">
                 <div class="category-title">
-                    <span>✍️ Preliminary Examination</span>
-                    <span class="weight-badge">10% WEIGHT</span>
+                    <span>✍️ Preliminary Exam</span>
+                    <div class="weight-input-container">
+                        <label for="weight-prelim">WEIGHT:</label>
+                        <input type="number" id="weight-prelim" class="weight-input save-input" value="10" min="0" max="100">%
+                    </div>
                 </div>
                 <span class="category-summary" id="prelim-summary">0%</span>
             </div>
@@ -597,12 +487,15 @@
             </div>
         </div>
 
-        <!-- 3. MIDTERM EXAM (10%) -->
+        <!-- 3. MIDTERM EXAM (Default: 10%) -->
         <div class="category-block">
             <div class="category-header">
                 <div class="category-title">
-                    <span>📑 Midterm Examination</span>
-                    <span class="weight-badge">10% WEIGHT</span>
+                    <span>📑 Midterm Exam</span>
+                    <div class="weight-input-container">
+                        <label for="weight-midterm">WEIGHT:</label>
+                        <input type="number" id="weight-midterm" class="weight-input save-input" value="10" min="0" max="100">%
+                    </div>
                 </div>
                 <span class="category-summary" id="midterm-summary">0%</span>
             </div>
@@ -614,12 +507,15 @@
             </div>
         </div>
 
-        <!-- 4. FINAL EXAM (20%) -->
+        <!-- 4. FINAL EXAM (Default: 20%) -->
         <div class="category-block">
             <div class="category-header">
                 <div class="category-title">
-                    <span>🎓 Final Examination</span>
-                    <span class="weight-badge">20% WEIGHT</span>
+                    <span>🎓 Final Exam</span>
+                    <div class="weight-input-container">
+                        <label for="weight-final">WEIGHT:</label>
+                        <input type="number" id="weight-final" class="weight-input save-input" value="20" min="0" max="100">%
+                    </div>
                 </div>
                 <span class="category-summary" id="final-summary">0%</span>
             </div>
@@ -631,12 +527,15 @@
             </div>
         </div>
 
-        <!-- 5. SEMESTRAL PROJECT (10%) -->
+        <!-- 5. SEMESTRAL PROJECT (Default: 10%) -->
         <div class="category-block">
             <div class="category-header">
                 <div class="category-title">
-                    <span>🎬 Production Project</span>
-                    <span class="weight-badge">10% WEIGHT</span>
+                    <span>🎬 Semestral Project</span>
+                    <div class="weight-input-container">
+                        <label for="weight-proj">WEIGHT:</label>
+                        <input type="number" id="weight-proj" class="weight-input save-input" value="10" min="0" max="100">%
+                    </div>
                 </div>
                 <span class="category-summary" id="proj-summary">0%</span>
             </div>
@@ -648,12 +547,15 @@
             </div>
         </div>
 
-        <!-- 6. ORAL RECITATION (15%) -->
+        <!-- 6. ORAL RECITATION (Default: 15%) -->
         <div class="category-block">
             <div class="category-header">
                 <div class="category-title">
-                    <span>🎙️ Media Discussions</span>
-                    <span class="weight-badge">15% WEIGHT</span>
+                    <span>🎙️ Recitation & Participation</span>
+                    <div class="weight-input-container">
+                        <label for="weight-rec">WEIGHT:</label>
+                        <input type="number" id="weight-rec" class="weight-input save-input" value="15" min="0" max="100">%
+                    </div>
                 </div>
                 <span class="category-summary" id="rec-summary">0%</span>
             </div>
@@ -661,12 +563,15 @@
             <div id="recitation-container"></div>
         </div>
 
-        <!-- 7. QUIZZES (20%) -->
+        <!-- 7. QUIZZES (Default: 20%) -->
         <div class="category-block">
             <div class="category-header">
                 <div class="category-title">
-                    <span>📊 Quizzes & Assessments</span>
-                    <span class="weight-badge">20% WEIGHT</span>
+                    <span>📊 Quizzes & Tests</span>
+                    <div class="weight-input-container">
+                        <label for="weight-quiz">WEIGHT:</label>
+                        <input type="number" id="weight-quiz" class="weight-input save-input" value="20" min="0" max="100">%
+                    </div>
                 </div>
                 <span class="category-summary" id="quiz-summary">0%</span>
             </div>
@@ -726,9 +631,6 @@
                 <tr><td>Below 70%</td><td><strong>5.00</strong></td><td>Failure</td></tr>
             </tbody>
         </table>
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 8px; line-height: 1.4; text-align: left;">
-            *Students with a computed grade of 70–74% will be evaluated for passing (3.00) or failure (5.00) based on performance and class standing.
-        </p>
         <button class="btn-close" onclick="closeScaleModal()" style="margin-top: 15px;">Close Scale</button>
     </div>
 </div>
@@ -749,6 +651,8 @@ const quizDefaults = [
     { name: "Quiz 1" }, { name: "Quiz 2" }, { name: "Quiz 3" }
 ];
 
+const catPrefixes = ['act', 'prelim', 'midterm', 'final', 'proj', 'rec', 'quiz'];
+
 function createRows(containerId, items, prefix) {
     const container = document.getElementById(containerId);
     items.forEach((item, i) => {
@@ -767,15 +671,6 @@ createRows('activities-container', activityDefaults, 'act');
 createRows('recitation-container', recitationDefaults, 'rec');
 createRows('quizzes-container', quizDefaults, 'quiz');
 
-function copyEmail() {
-    const email = document.getElementById('emailText').innerText;
-    navigator.clipboard.writeText(email).then(() => {
-        const btn = document.getElementById('copyBtn');
-        btn.innerText = 'Copied! ✓';
-        setTimeout(() => { btn.innerText = 'Copy Email'; }, 2000);
-    });
-}
-
 function setupAutoSave() {
     const inputs = document.querySelectorAll('.save-input');
     inputs.forEach((input, index) => {
@@ -787,22 +682,41 @@ function setupAutoSave() {
         input.addEventListener('input', () => {
             localStorage.setItem(input.id, input.value);
             updateLiveProgress();
-            calculateTargetRequirement();
+            validateWeights();
         });
     });
     updateLiveProgress();
+    validateWeights();
+}
+
+function validateWeights() {
+    let totalWeight = 0;
+    catPrefixes.forEach(prefix => {
+        const w = parseFloat(document.getElementById(`weight-${prefix}`).value) || 0;
+        totalWeight += w;
+    });
+
+    const statusEl = document.getElementById('weightTotalStatus');
+    if (totalWeight === 100) {
+        statusEl.innerText = `100% (Valid)`;
+        statusEl.className = 'weight-status-valid';
+    } else {
+        statusEl.innerText = `${totalWeight}% (Must equal 100%)`;
+        statusEl.className = 'weight-status-invalid';
+    }
 }
 
 function resetForm() {
     if (confirm("Are you sure you want to clear all entered scores?")) {
         const inputs = document.querySelectorAll('.save-input');
         inputs.forEach(input => {
-            input.value = "";
-            localStorage.removeItem(input.id);
+            if (!input.classList.contains('weight-input')) {
+                input.value = "";
+                localStorage.removeItem(input.id);
+            }
         });
         document.getElementById('result').style.display = 'none';
         updateLiveProgress();
-        calculateTargetRequirement();
     }
 }
 
@@ -846,8 +760,7 @@ function getTransmutedPercentage(prefix) {
 }
 
 function updateLiveProgress() {
-    const categories = ['act', 'prelim', 'midterm', 'final', 'proj', 'rec', 'quiz'];
-    categories.forEach(cat => {
+    catPrefixes.forEach(cat => {
         const val = getTransmutedPercentage(cat);
         const summary = document.getElementById(`${cat}-summary`);
         const progress = document.getElementById(`${cat}-progress`);
@@ -857,56 +770,25 @@ function updateLiveProgress() {
     });
 }
 
-function calculateTargetRequirement() {
-    const targetMap = {
-        "1.0": 98, "1.25": 94, "1.5": 90,
-        "1.75": 88, "2.0": 85, "3.0": 75
-    };
-    const targetGrade = document.getElementById('targetGradeSelect').value;
-    const targetOverall = targetMap[targetGrade];
-
-    const prelimP = getTransmutedPercentage('prelim');
-    const midtermP = getTransmutedPercentage('midterm');
-    const recP = getTransmutedPercentage('rec');
-    const quizP = getTransmutedPercentage('quiz');
-    const actP = getTransmutedPercentage('act');
-
-    const currentContribution = (prelimP * 0.10) + (midtermP * 0.10) + (recP * 0.15) + (quizP * 0.20) + (actP * 0.15);
-    const neededContribution = targetOverall - currentContribution;
-    const remainingWeight = 0.30; 
-
-    const targetEl = document.getElementById('targetResultText');
-    if (neededContribution <= 0) {
-        targetEl.innerText = `🎉 You've already reached the weighted scores needed for a ${targetGrade}! Keep it steady!`;
-    } else {
-        const avgTransmutedNeeded = neededContribution / remainingWeight;
-        if (avgTransmutedNeeded > 100) {
-            targetEl.innerText = `⚠️ Reaching ${targetGrade} requires higher scores than remaining points allow. Aim for the next grade bracket!`;
-        } else {
-            const rawPercentageNeeded = Math.max(0, ((avgTransmutedNeeded - 37.5) / 62.5) * 100);
-            targetEl.innerText = `💡 To target a ${targetGrade}, you need an average of ~${rawPercentageNeeded.toFixed(1)}% raw score on remaining exams/projects.`;
-        }
-    }
-}
-
 function computeAll() {
+    let totalWeight = 0;
+    catPrefixes.forEach(prefix => {
+        totalWeight += parseFloat(document.getElementById(`weight-${prefix}`).value) || 0;
+    });
+
+    if (totalWeight !== 100) {
+        alert(`The total weight allocated across all categories is currently ${totalWeight}%. Please adjust the category percentage weights so they total exactly 100% before computing!`);
+        return;
+    }
+
     updateLiveProgress();
 
-    const actP = getTransmutedPercentage('act');
-    const prelimP = getTransmutedPercentage('prelim');
-    const midtermP = getTransmutedPercentage('midterm');
-    const finalP = getTransmutedPercentage('final');
-    const projP = getTransmutedPercentage('proj');
-    const recP = getTransmutedPercentage('rec');
-    const quizP = getTransmutedPercentage('quiz');
-
-    const total = (prelimP * 0.10) + 
-                  (midtermP * 0.10) + 
-                  (recP * 0.15) + 
-                  (quizP * 0.20) + 
-                  (actP * 0.15) + 
-                  (finalP * 0.20) + 
-                  (projP * 0.10);
+    let total = 0;
+    catPrefixes.forEach(prefix => {
+        const percentage = getTransmutedPercentage(prefix);
+        const weight = (parseFloat(document.getElementById(`weight-${prefix}`).value) || 0) / 100;
+        total += (percentage * weight);
+    });
 
     const roundedVal = Math.round(total);
     const exactFormatted = total.toFixed(2);
@@ -1033,7 +915,6 @@ function closeScaleModal() {
 
 setupAutoSave();
 restoreTheme();
-calculateTargetRequirement();
 </script>
 
 </body>
