@@ -3,66 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Grade Transparency Calculator</title>
-    <!-- JS Confetti Library for Celebrations -->
+    <title>Comm Studies Grade Transparency Hub</title>
+    <!-- Google Fonts for Editorial / Media Aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <!-- JS Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --bg-color: #f8fafc;
+            --bg-color: #f1f5f9;
             --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
             --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --accent-tag: #e0e7ff;
+            --accent-tag-text: #3730a3;
             --border: #e2e8f0;
+            --input-bg: #ffffff;
             --fail-bg: #fee2e2;
             --fail-text: #dc2626;
             --pass-bg: #dcfce7;
             --pass-text: #16a34a;
+            --notice-bg: #eff6ff;
+            --notice-border: #3b82f6;
+            --notice-text: #1e40af;
+            --card-sub-bg: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #60a5fa;
+            --accent-tag: #312e81;
+            --accent-tag-text: #e0e7ff;
+            --border: #334155;
+            --input-bg: #0f172a;
+            --fail-bg: #450a0a;
+            --fail-text: #fca5a5;
+            --pass-bg: #052e16;
+            --pass-text: #86efac;
+            --notice-bg: #1e3a8a;
+            --notice-border: #60a5fa;
+            --notice-text: #dbeafe;
+            --card-sub-bg: #182234;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg-color);
-            color: #1e293b;
+            color: var(--text-main);
             padding: 20px;
+            margin: 0;
             display: flex;
             justify-content: center;
         }
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
             background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            position: relative;
         }
 
-        h2 { text-align: center; margin-bottom: 5px; }
-        p.subtitle { text-align: center; color: #64748b; margin-bottom: 15px; }
+        /* HEADER & THEME TOGGLE */
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .brand-badge {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--accent-tag);
+            color: var(--accent-tag-text);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .theme-btn, .info-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-btn:hover, .info-btn:hover {
+            border-color: var(--primary);
+        }
+
+        h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            text-align: center;
+            margin: 10px 0 5px 0;
+            font-size: 1.8rem;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
 
         .course-notice {
-            background-color: #eff6ff;
-            border-left: 4px solid var(--primary);
-            color: #1e40af;
-            padding: 12px 16px;
-            border-radius: 6px;
+            background-color: var(--notice-bg);
+            border-left: 4px solid var(--notice-border);
+            color: var(--notice-text);
+            padding: 14px 18px;
+            border-radius: 8px;
             font-size: 0.92rem;
             margin-bottom: 25px;
-            text-align: center;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
+        /* TARGET GRADE CALCULATOR WIDGET */
+        .target-widget {
+            background-color: var(--card-sub-bg);
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            justify-content: space-between;
+        }
+
+        .target-widget label {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .target-widget select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .target-result {
+            width: 100%;
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        /* CATEGORY CARDS */
         .category-block {
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 18px;
             margin-bottom: 20px;
-            background-color: #fafafa;
+            background-color: var(--card-sub-bg);
         }
 
         .category-title {
-            font-weight: bold;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
             font-size: 1.1rem;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             color: var(--primary);
             display: flex;
             justify-content: space-between;
@@ -70,8 +198,9 @@
         }
 
         .category-summary {
-            font-size: 0.95rem;
-            color: #475569;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-muted);
             font-weight: 600;
         }
 
@@ -79,43 +208,74 @@
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
             gap: 10px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             align-items: center;
         }
 
         .item-row label {
             font-size: 0.9rem;
-            color: #334155;
+            color: var(--text-main);
         }
 
         input {
-            padding: 8px;
-            border: 1px solid #cbd5e1;
+            padding: 9px;
+            border: 1px solid var(--border);
             border-radius: 6px;
             text-align: center;
             width: 100%;
-            box-sizing: border-box;
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        input:focus {
+            outline: 2px solid var(--primary);
+            border-color: transparent;
+        }
+
+        /* BUTTONS */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
         }
 
         .btn-calc {
-            width: 100%;
+            flex: 2;
+            min-width: 200px;
             padding: 14px;
             background-color: var(--primary);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
+            font-size: 1.05rem;
+            font-weight: 700;
             cursor: pointer;
-            margin-top: 10px;
         }
 
-        .btn-calc:hover { background-color: #1d4ed8; }
+        .btn-calc:hover { background-color: var(--primary-hover); }
 
+        .btn-secondary {
+            flex: 1;
+            min-width: 120px;
+            padding: 14px;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover { border-color: var(--primary); }
+
+        /* RESULT BOX */
         .result-box {
             margin-top: 25px;
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 10px;
             text-align: center;
             display: none;
         }
@@ -125,25 +285,27 @@
 
         .grade-display { font-size: 2.5rem; font-weight: bold; margin-top: 5px; }
 
-        /* MODAL POP-UP STYLES */
+        /* MODALS */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.65);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            backdrop-filter: blur(3px);
         }
 
         .modal-content {
-            background: white;
+            background: var(--card-bg);
+            color: var(--text-main);
             padding: 30px;
-            border-radius: 12px;
+            border-radius: 16px;
             text-align: center;
-            max-width: 420px;
+            max-width: 440px;
             width: 90%;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             animation: popIn 0.3s ease-out;
         }
 
@@ -153,36 +315,95 @@
         }
 
         .modal-icon { font-size: 4rem; margin-bottom: 10px; }
-        .modal-title { font-size: 1.6rem; font-weight: bold; margin-bottom: 10px; }
-        .modal-body { font-size: 1.05rem; color: #334155; margin-bottom: 20px; line-height: 1.5; }
-        .modal-grade { font-size: 0.95rem; color: #64748b; margin-top: 10px; }
+        .modal-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: bold; margin-bottom: 10px; }
+        .modal-body { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
+        .modal-grade { font-size: 0.95rem; color: var(--text-main); margin-top: 10px; }
+        
+        .scale-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.88rem;
+        }
+
+        .scale-table th, .scale-table td {
+            border: 1px solid var(--border);
+            padding: 6px 10px;
+            text-align: center;
+        }
+
+        .scale-table th { background-color: var(--card-sub-bg); color: var(--primary); }
+
         .btn-close {
             background: var(--primary);
             color: white;
             border: none;
             padding: 10px 24px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 1rem;
             cursor: pointer;
             font-weight: bold;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            .item-row { grid-template-columns: 1fr 1fr; }
+            .item-row label { grid-column: span 2; font-weight: 600; margin-bottom: 2px; }
+            .btn-group { flex-direction: column; }
+        }
+
+        /* PRINT STYLES FOR EXPORT */
+        @media print {
+            body { background: white; color: black; }
+            .container { box-shadow: none; border: none; width: 100%; max-width: 100%; padding: 0; }
+            .header-bar, .theme-btn, .info-btn, .btn-group, .target-widget, .course-notice { display: none !important; }
+            .category-block { border: 1px solid #ccc; background: none; page-break-inside: avoid; }
+            input { border: none; background: none; font-weight: bold; }
+            .result-box { display: block !important; border: 1px solid #000; background: none !important; color: black !important; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <!-- HEADER BAR -->
+    <div class="header-bar">
+        <span class="brand-badge">🎙️ COMM MEDIA LAB</span>
+        <div style="display: flex; gap: 8px;">
+            <button class="info-btn" onclick="openScaleModal()">📊 Scale</button>
+            <button class="theme-btn" id="themeToggle" onclick="toggleTheme()">🌙 Dark</button>
+        </div>
+    </div>
+
     <h2>Grade Transparency Calculator</h2>
-    <p class="subtitle">Enter your scores earned and maximum points for each requirement</p>
+    <p class="subtitle">Official Grade Computation & Performance Analytics Portal</p>
 
     <!-- DESCRIPTION NOTICE BANNER -->
     <div class="course-notice">
-        📌 <strong>Important Note:</strong> This grade calculator and formula breakdown are configured exclusively for subjects taught by <strong>Sir Armand</strong>. Results may not apply to other courses or departments using different grading scales.
+        📌 <strong>Departmental Note:</strong> Configured exclusively for Department of Communication courses taught by <strong>Sir Armand</strong>. All scores utilize the standard 62.5% transmuted baseline formula.
+    </div>
+
+    <!-- TARGET GRADE CALCULATOR WIDGET -->
+    <div class="target-widget">
+        <div>
+            <label for="targetGradeSelect">🎯 Target Course Grade:</label>
+            <select id="targetGradeSelect" onchange="calculateTargetRequirement()">
+                <option value="1.0">1.00 (97.5%)</option>
+                <option value="1.25">1.25 (93.5%)</option>
+                <option value="1.5">1.50 (89.5%)</option>
+                <option value="1.75">1.75 (87.5%)</option>
+                <option value="2.0">2.00 (84.5%)</option>
+                <option value="3.0">3.00 (75.0%)</option>
+            </select>
+        </div>
+        <div class="target-result" id="targetResultText">Fill in your current scores to see your remaining target score requirement.</div>
     </div>
 
     <!-- 1. ACTIVITIES (15%) -->
     <div class="category-block">
         <div class="category-title">
-            <span>Activities (15%)</span>
+            <span>Activities & Classwork (15%)</span>
             <span class="category-summary" id="act-summary">Total: 0%</span>
         </div>
         <div id="activities-container"></div>
@@ -191,59 +412,59 @@
     <!-- 2. PRELIMINARY EXAM (10%) -->
     <div class="category-block">
         <div class="category-title">
-            <span>Preliminary Exam (10%)</span>
+            <span>Preliminary Examination (10%)</span>
             <span class="category-summary" id="prelim-summary">Total: 0%</span>
         </div>
         <div class="item-row">
             <label>Preliminary Exam Score</label>
-            <input type="number" class="prelim-s" placeholder="Score">
-            <input type="number" class="prelim-m" placeholder="Max">
+            <input type="number" class="prelim-s save-input" placeholder="Score">
+            <input type="number" class="prelim-m save-input" placeholder="Max">
         </div>
     </div>
 
     <!-- 3. MIDTERM EXAM (10%) -->
     <div class="category-block">
         <div class="category-title">
-            <span>Midterm Exam (10%)</span>
+            <span>Midterm Examination (10%)</span>
             <span class="category-summary" id="midterm-summary">Total: 0%</span>
         </div>
         <div class="item-row">
             <label>Midterm Exam Score</label>
-            <input type="number" class="midterm-s" placeholder="Score">
-            <input type="number" class="midterm-m" placeholder="Max">
+            <input type="number" class="midterm-s save-input" placeholder="Score">
+            <input type="number" class="midterm-m save-input" placeholder="Max">
         </div>
     </div>
 
     <!-- 4. FINAL EXAM (20%) -->
     <div class="category-block">
         <div class="category-title">
-            <span>Final Exam (20%)</span>
+            <span>Final Examination (20%)</span>
             <span class="category-summary" id="final-summary">Total: 0%</span>
         </div>
         <div class="item-row">
             <label>Final Exam Score</label>
-            <input type="number" class="final-s" placeholder="Score">
-            <input type="number" class="final-m" placeholder="Max">
+            <input type="number" class="final-s save-input" placeholder="Score">
+            <input type="number" class="final-m save-input" placeholder="Max">
         </div>
     </div>
 
     <!-- 5. SEMESTRAL PROJECT (10%) -->
     <div class="category-block">
         <div class="category-title">
-            <span>Semestral Project (10%)</span>
+            <span>Semestral Production Project (10%)</span>
             <span class="category-summary" id="proj-summary">Total: 0%</span>
         </div>
         <div class="item-row">
             <label>Semestral Project Score</label>
-            <input type="number" class="proj-s" placeholder="Score">
-            <input type="number" class="proj-m" placeholder="Max">
+            <input type="number" class="proj-s save-input" placeholder="Score">
+            <input type="number" class="proj-m save-input" placeholder="Max">
         </div>
     </div>
 
     <!-- 6. ORAL RECITATION (15%) -->
     <div class="category-block">
         <div class="category-title">
-            <span>Oral Recitation (15%)</span>
+            <span>Recitation & Media Discussions (15%)</span>
             <span class="category-summary" id="rec-summary">Total: 0%</span>
         </div>
         <div id="recitation-container"></div>
@@ -252,13 +473,17 @@
     <!-- 7. QUIZZES (20%) -->
     <div class="category-block">
         <div class="category-title">
-            <span>Quizzes (20%)</span>
+            <span>Quizzes & Assessments (20%)</span>
             <span class="category-summary" id="quiz-summary">Total: 0%</span>
         </div>
         <div id="quizzes-container"></div>
     </div>
 
-    <button class="btn-calc" onclick="computeAll()">Compute Final Grade</button>
+    <div class="btn-group">
+        <button class="btn-calc" onclick="computeAll()">Compute Final Grade</button>
+        <button class="btn-secondary" onclick="window.print()">📄 Save PDF</button>
+        <button class="btn-secondary" onclick="resetForm()">🔄 Reset</button>
+    </div>
 
     <div id="result" class="result-box">
         <div id="summaryText"></div>
@@ -266,13 +491,41 @@
     </div>
 </div>
 
-<!-- POP-UP MODAL -->
+<!-- POP-UP MODAL RESULT -->
 <div class="modal-overlay" id="resultModal">
     <div class="modal-content">
         <div class="modal-icon" id="modalIcon">👑</div>
         <div class="modal-title" id="modalTitle">Napakahusay!</div>
         <div class="modal-body" id="modalBody"></div>
         <button class="btn-close" onclick="closeModal()">Salamat, Sir!</button>
+    </div>
+</div>
+
+<!-- GRADING SCALE MODAL -->
+<div class="modal-overlay" id="scaleModal">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-title">📊 Grading Scale & Transmutation</div>
+        <p class="modal-body" style="font-size: 0.9rem; margin-bottom: 10px;">
+            Formula: <code>Transmuted % = (Score / Max Score × 62.5) + 37.5</code>
+        </p>
+        <table class="scale-table">
+            <thead>
+                <tr><th>Transmuted Grade Total</th><th>Grade Mark</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>97.50% - 100.0%</td><td><strong>1.00</strong></td></tr>
+                <tr><td>93.50% - 97.49%</td><td><strong>1.25</strong></td></tr>
+                <tr><td>89.50% - 93.49%</td><td><strong>1.50</strong></td></tr>
+                <tr><td>87.50% - 89.49%</td><td><strong>1.75</strong></td></tr>
+                <tr><td>84.50% - 87.49%</td><td><strong>2.00</strong></td></tr>
+                <tr><td>82.50% - 84.49%</td><td><strong>2.25</strong></td></tr>
+                <tr><td>79.50% - 82.49%</td><td><strong>2.50</strong></td></tr>
+                <tr><td>77.50% - 79.49%</td><td><strong>2.75</strong></td></tr>
+                <tr><td>75.00% - 77.49%</td><td><strong>3.00</strong></td></tr>
+                <tr><td>Below 75.00%</td><td><strong>5.00</strong></td></tr>
+            </tbody>
+        </table>
+        <button class="btn-close" onclick="closeScaleModal()">Close Scale</button>
     </div>
 </div>
 
@@ -294,13 +547,13 @@ const quizDefaults = [
 
 function createRows(containerId, items, prefix) {
     const container = document.getElementById(containerId);
-    items.forEach((item) => {
+    items.forEach((item, i) => {
         const row = document.createElement('div');
         row.className = 'item-row';
         row.innerHTML = `
             <label>${item.name}</label>
-            <input type="number" class="${prefix}-s" placeholder="Score">
-            <input type="number" class="${prefix}-m" placeholder="Max">
+            <input type="number" class="${prefix}-s save-input" id="${prefix}-s-${i}" placeholder="Score">
+            <input type="number" class="${prefix}-m save-input" id="${prefix}-m-${i}" placeholder="Max">
         `;
         container.appendChild(row);
     });
@@ -309,6 +562,60 @@ function createRows(containerId, items, prefix) {
 createRows('activities-container', activityDefaults, 'act');
 createRows('recitation-container', recitationDefaults, 'rec');
 createRows('quizzes-container', quizDefaults, 'quiz');
+
+// LOCALSTORAGE: AUTO-SAVE & RESTORE
+function setupAutoSave() {
+    const inputs = document.querySelectorAll('.save-input');
+    inputs.forEach((input, index) => {
+        // Set unique ID if missing
+        if (!input.id) input.id = 'input-auto-' + index;
+        
+        // Restore saved value
+        const savedVal = localStorage.getItem(input.id);
+        if (savedVal !== null) input.value = savedVal;
+
+        // Save on input change
+        input.addEventListener('input', () => {
+            localStorage.setItem(input.id, input.value);
+            calculateTargetRequirement();
+        });
+    });
+}
+
+function resetForm() {
+    if (confirm("Are you sure you want to clear all entered scores?")) {
+        const inputs = document.querySelectorAll('.save-input');
+        inputs.forEach(input => {
+            input.value = "";
+            localStorage.removeItem(input.id);
+        });
+        document.getElementById('result').style.display = 'none';
+        calculateTargetRequirement();
+    }
+}
+
+// THEME TOGGLE
+function toggleTheme() {
+    const body = document.body;
+    const btn = document.getElementById('themeToggle');
+    if (body.getAttribute('data-theme') === 'dark') {
+        body.removeAttribute('data-theme');
+        btn.innerText = '🌙 Dark';
+        localStorage.setItem('comm_theme', 'light');
+    } else {
+        body.setAttribute('data-theme', 'dark');
+        btn.innerText = '☀️ Light';
+        localStorage.setItem('comm_theme', 'dark');
+    }
+}
+
+function restoreTheme() {
+    const savedTheme = localStorage.getItem('comm_theme');
+    if (savedTheme === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+        document.getElementById('themeToggle').innerText = '☀️ Light';
+    }
+}
 
 function getTransmutedPercentage(prefix) {
     const scores = document.querySelectorAll(`.${prefix}-s`);
@@ -325,6 +632,41 @@ function getTransmutedPercentage(prefix) {
 
     if (totalMax === 0) return 0;
     return ((totalScore / totalMax) * 62.5) + 37.5;
+}
+
+function calculateTargetRequirement() {
+    const targetMap = {
+        "1.0": 97.5, "1.25": 93.5, "1.5": 89.5,
+        "1.75": 87.5, "2.0": 84.5, "3.0": 75.0
+    };
+    const targetGrade = document.getElementById('targetGradeSelect').value;
+    const targetOverall = targetMap[targetGrade];
+
+    // Compute current total achieved percentage
+    const prelimP = getTransmutedPercentage('prelim');
+    const midtermP = getTransmutedPercentage('midterm');
+    const recP = getTransmutedPercentage('rec');
+    const quizP = getTransmutedPercentage('quiz');
+    const actP = getTransmutedPercentage('act');
+
+    // Assuming Final Exam (20%) and Project (10%) might be remaining
+    const currentContribution = (prelimP * 0.10) + (midtermP * 0.10) + (recP * 0.15) + (quizP * 0.20) + (actP * 0.15);
+    const neededContribution = targetOverall - currentContribution;
+    const remainingWeight = 0.30; // 20% final exam + 10% project
+
+    const targetEl = document.getElementById('targetResultText');
+    if (neededContribution <= 0) {
+        targetEl.innerText = `🎉 You've already reached the weighted scores needed for a ${targetGrade}! Keep it steady!`;
+    } else {
+        const avgTransmutedNeeded = neededContribution / remainingWeight;
+        if (avgTransmutedNeeded > 100) {
+            targetEl.innerText = `⚠️ Reaching ${targetGrade} requires higher scores than remaining points allow. Aim for the next grade bracket!`;
+        } else {
+            // Convert transmuted needed back to raw percentage: T = (Raw * 62.5) + 37.5 => Raw = (T - 37.5) / 62.5
+            const rawPercentageNeeded = Math.max(0, ((avgTransmutedNeeded - 37.5) / 62.5) * 100);
+            targetEl.innerText = `💡 To target a ${targetGrade}, you need an average of ~${rawPercentageNeeded.toFixed(1)}% raw score on remaining exams/projects.`;
+        }
+    }
 }
 
 function computeAll() {
@@ -371,7 +713,7 @@ function computeAll() {
     document.getElementById('summaryText').innerHTML = `Transmuted Grade Total: <strong>${rounded}%</strong>`;
     document.getElementById('gradeMark').innerText = `Final Grade: ${mark}`;
 
-    // Custom Emoji, Title & Message per Grade
+    // Custom Emoji & Message per Grade
     let tagalogTitle = "";
     let tagalogMsg = "";
     let iconChar = "🎉";
@@ -379,43 +721,43 @@ function computeAll() {
     if (mark === "1.0") {
         tagalogTitle = "Napakahusay!";
         tagalogMsg = "Nakakabilib ang sipag at dedikasyon mo ngayong sem. Ipagpatuloy mo lang 'yang ganyang husay!";
-        iconChar = "👑"; // Crown for 1.0
+        iconChar = "👑";
     } else if (mark === "1.25") {
         tagalogTitle = "Mabuting trabaho!";
         tagalogMsg = "Kitang-kita ang effort na ibinuhos mo rito. Maging proud ka sa sarili mo at sa bawat puyat mo.";
-        iconChar = "🏆"; // Trophy for 1.25
+        iconChar = "🏆";
     } else if (mark === "1.5") {
         tagalogTitle = "Galing!";
         tagalogMsg = "Isang solid na performance ngayong semester. Pinatunayan mong kaya mong mag-excel!";
-        iconChar = "🌟"; // Star for 1.5
+        iconChar = "🌟";
     } else if (mark === "1.75") {
         tagalogTitle = "Husay!";
         tagalogMsg = "Magandang marka! Naging consistent ka sa mga requirements at aralin. Keep it up!";
-        iconChar = "👏"; // Clapping hands for 1.75
+        iconChar = "👏";
     } else if (mark === "2.0") {
         tagalogTitle = "Magandang laban!";
         tagalogMsg = "Naitawid mo nang maayos ang subject na 'to. Tuloy-tuloy lang ang sipag!";
-        iconChar = "😎"; // Cool face for 2.0
+        iconChar = "😎";
     } else if (mark === "2.25") {
         tagalogTitle = "Ligtas at Pasado!";
         tagalogMsg = "May mga naging pagsubok man, ang mahalaga ay nakaraos ka at may natutunan.";
-        iconChar = "🌱"; // Seedling for 2.25
+        iconChar = "🌱";
     } else if (mark === "2.5") {
         tagalogTitle = "Pinaghirapan!";
         tagalogMsg = "Alam kong hindi naging madali ang subject na 'to, pero ang mahalaga hindi ka sumuko.";
-        iconChar = "🛡️"; // Shield for 2.5
+        iconChar = "🛡️";
     } else if (mark === "2.75") {
         tagalogTitle = "Kumapit at Nagtagumpay!";
         tagalogMsg = "Muntik man, pinatunayan mong may tibay ka ng loob para tumapos. Bawi sa susunod!";
-        iconChar = "💪"; // Flexed muscle for 2.75
+        iconChar = "💪";
     } else if (mark === "3.0") {
         tagalogTitle = "Naitawid rin!";
         tagalogMsg = "Huling hirit pero pasado pa rin! Ang mahalaga rito ay lumaban ka hanggang dulo.";
-        iconChar = "🎓"; // Graduation cap for 3.0
+        iconChar = "🎓";
     } else {
         tagalogTitle = "Bawi tayo next time.";
         tagalogMsg = "Hindi rito nagtatapos ang lahat. Ang bawat pagsubok ay pagkakataon para magbalik nang mas handa.";
-        iconChar = "🌿"; // Leaf for 5.0
+        iconChar = "🌿";
     }
 
     const modal = document.getElementById('resultModal');
@@ -454,6 +796,19 @@ function computeAll() {
 function closeModal() {
     document.getElementById('resultModal').style.display = "none";
 }
+
+function openScaleModal() {
+    document.getElementById('scaleModal').style.display = "flex";
+}
+
+function closeScaleModal() {
+    document.getElementById('scaleModal').style.display = "none";
+}
+
+// Initialize setup
+setupAutoSave();
+restoreTheme();
+calculateTargetRequirement();
 </script>
 
 </body>
